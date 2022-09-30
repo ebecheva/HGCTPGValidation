@@ -34,7 +34,7 @@ pipeline {
                         then
                             rm -rf HGCTPGValidation
                         fi
-                        git clone -b Jenkins-UseMulticonfigWebPageValidation https://github.com/ebecheva/HGCTPGValidation HGCTPGValidation
+                        git clone -b Jenkins-newFeature_readMulticonfig https://github.com/ebecheva/HGCTPGValidation HGCTPGValidation
                         source HGCTPGValidation/env_install.sh
                         pip install attrs
                         if [ -d "./test_dir" ] 
@@ -62,7 +62,7 @@ pipeline {
                         export LABEL="test"
                         if [ -z "$CHANGE_FORK" ]
                         then
-                            export REMOTE="hgc-tpg"
+                            export REMOTE="ebecheva"
                         else
                             export REMOTE=$CHANGE_FORK
                         fi
@@ -96,7 +96,8 @@ pipeline {
                         export LABEL="test"
                         export PROC_MODIFIER=""
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
-                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL $PROC_MODIFIER
+                        ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL 
+                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL 
                         '''            
                     }
                 }
@@ -113,7 +114,7 @@ pipeline {
                         source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
                         export LABEL="ref"
-                        export REMOTE="hgc-tpg"
+                        export REMOTE="ebecheva"
                         ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_TARGET $CHANGE_TARGET $LABEL
                         '''
                     }
@@ -126,7 +127,8 @@ pipeline {
                         export LABEL="ref"
                         export PROC_MODIFIER=""
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
-                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL $PROC_MODIFIER
+                        ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL 
+                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL
                         '''            
                     }
                 }
