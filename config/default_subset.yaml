@@ -1,0 +1,6 @@
+---
+subsetName: subset1
+description: basic test
+configuration:
+    ref: default
+    test: default
