@@ -11,5 +11,5 @@ echo "label " $2
 module purge
 module load python/3.7.0
 python --version
-python ../../../read_configuration_Jenkins.py --subsetconfig $1 --label $2
+python ./read_configuration_Jenkins.py --subsetconfig $1 --label $2
 
