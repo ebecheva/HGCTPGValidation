@@ -12,5 +12,5 @@ echo "label " $2
 #module load python/3.7.0
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 python --version
-python ./read_configuration_Jenkins.py --subsetconfig $1 --label $2
+python ../../../read_configuration_Jenkins.py --subsetconfig $1 --label $2
 
