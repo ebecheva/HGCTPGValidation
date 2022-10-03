@@ -11,5 +11,5 @@ echo "label " $2
 module purge
 module load python/3.9.9
 python --version
-python ../../read_configuration_Jenkins.py --subsetconfig $1 --label $2
-echo '!!!!!!!!! 1 nbEvents= ' $nbEvents
+python ../../../read_configuration_Jenkins.py --subsetconfig $1 --label $2
+
