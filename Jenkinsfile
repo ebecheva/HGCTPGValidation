@@ -15,9 +15,9 @@ pipeline {
                     steps{
                         echo 'Clean the working environment.'
                         sh '''
-                        if [ -d "/data/jenkins/workspace/validation_data_test/PR$CHANGE_ID" ] 
+                        if [ -d "/data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID" ] 
                         then
-                            rm -rf /data/jenkins/workspace/validation_data_test/PR$CHANGE_ID
+                            rm -rf /data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID
                         fi
                         '''
                     }
@@ -144,12 +144,12 @@ pipeline {
                 ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_ref/src ./${REF_RELEASE}_HGCalTPGValidation_test/src ./GIFS
                 echo 'CHANGE_ID= ', $CHANGE_ID
                 echo '$CHANGE_TITLE= ', $CHANGE_TITLE
-                if [ -d /data/jenkins/workspace/validation_data_test/PR$CHANGE_ID ] 
+                if [ -d /data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID ] 
                 then
                     echo "Directory " PR$CHANGE_ID " exists." 
-                    rm -rf /data/jenkins/workspace/validation_data_test/PR$CHANGE_ID
+                    rm -rf /data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID
                 fi
-                export data_dir=/data/jenkins/workspace/validation_data_test
+                export data_dir=/data/jenkins/workspace/validation_data_test_emilia/
                 mkdir $data_dir/PR$CHANGE_ID
                 mkdir $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
                 cp -rf GIFS/. $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
