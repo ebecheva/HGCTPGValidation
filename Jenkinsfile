@@ -94,7 +94,6 @@ pipeline {
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         export LABEL="test"
-                        export PROC_MODIFIER=""
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
                         ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL 
                         ../../../HGCTPGValidation/scripts/produceData.sh $LABEL 
@@ -125,7 +124,6 @@ pipeline {
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         export LABEL="ref"
-                        export PROC_MODIFIER=""
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
                         ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL 
                         ../../../HGCTPGValidation/scripts/produceData.sh $LABEL
