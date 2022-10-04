@@ -100,6 +100,8 @@ pipeline {
                         module purge
                         module load python/3.9.9
                         python ../../../HGCTPGValidation/scripts/read_configuration_Jenkins.py --subsetconfig default_subset --label $LABEL
+                        echo "Jenkinsfile, nbEvents = " $nbEvents
+                        echo "Jenkinsfile, conditions = " $conditions
                         ../../../HGCTPGValidation/scripts/produceData.sh $LABEL 
                         '''            
                     }
