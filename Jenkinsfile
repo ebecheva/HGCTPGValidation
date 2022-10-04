@@ -95,7 +95,11 @@ pipeline {
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         export LABEL="test"
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
-                        ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL 
+                        #../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL 
+                        module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
+                        module purge
+                        module load python/3.9.9
+                        python ../../../HGCTPGValidation/scripts/read_configuration_Jenkins.py --subsetconfig default_subset --label $LABEL
                         ../../../HGCTPGValidation/scripts/produceData.sh $LABEL 
                         '''            
                     }
