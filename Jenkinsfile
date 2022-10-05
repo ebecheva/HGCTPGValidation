@@ -101,6 +101,7 @@ pipeline {
                         module load python/3.9.9
                         python --version
                         python ../../../HGCTPGValidation/scripts/read_configuration_Jenkins.py --subsetconfig default_subset --label $LABEL
+                        exit
                         ../../../HGCTPGValidation/scripts/produceData.sh $LABEL
                         '''     
                     }
