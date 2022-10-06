@@ -53,14 +53,14 @@ def main(subsetconfig, release):
     
     pprint.pprint(config_data['parameters']['nbOfEvents'])
     pprint.pprint(config_data['parameters']['conditions'])
-    os.putenv("nbEvents",str(config_data['parameters']['nbOfEvents']))
-    os.putenv("conditions",str(config_data['parameters']['conditions']))
-    os.putenv("beamspot",str(config_data['parameters']['beamspot']))
-    os.putenv("geometry",str(config_data['parameters']['geometry']))
-    os.putenv("era",str(config_data['parameters']['era']))
-    os.putenv("procModifiers",str(config_data['parameters']['procModifiers']))
-    os.putenv("filein",str(config_data['parameters']['filein']))
-    os.putenv("customise",str(config_data['parameters']['customise_commands']))
+    os.environ["nbEvents"]=str(config_data['parameters']['nbOfEvents'])
+    os.environ["conditions"]=str(config_data['parameters']['conditions'])
+    os.environ["beamspot"]=str(config_data['parameters']['beamspot'])
+    os.environ["geometry"]=str(config_data['parameters']['geometry'])
+    os.environ["era"]=str(config_data['parameters']['era'])
+    os.environ["procModifiers"]=str(config_data['parameters']['procModifiers'])
+    os.environ["filein"]=str(config_data['parameters']['filein'])
+    os.environ["customise"]=str(config_data['parameters']['customise_commands'])
     os.system('bash')
 
 if __name__ == "__main__":
