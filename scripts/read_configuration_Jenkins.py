@@ -61,7 +61,7 @@ def main(subsetconfig, release):
     os.putenv("procModifiers",str(config_data['parameters']['procModifiers']))
     os.putenv("filein",str(config_data['parameters']['filein']))
     os.putenv("customise",str(config_data['parameters']['customise_commands']))
-    os.system('sh')
+    os.system('bash')
 
 if __name__ == "__main__":
     import optparse
