@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# ./getConfig.sh subset_config_name
-
-# $1 label "ref" or "test"
-# $2 procModifier 
+# ./getConfig.sh subset_config_name label
+ 
 
 echo "subset_config " $1
 echo "label " $2
