@@ -96,12 +96,10 @@ pipeline {
                         export LABEL="test"
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
-                        module avail
                         module purge
                         module load python/3.9.9
                         python --version
-                        python ../../../HGCTPGValidation/scripts/read_configuration_Jenkins.py --subsetconfig default_subset --label $LABEL
-                        exit
+                        ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL
                         ../../../HGCTPGValidation/scripts/produceData.sh $LABEL
                         '''     
                     }
