@@ -100,15 +100,15 @@ def main(subsetconfig, release):
     pprint.pprint('Call cmsDriver')
     #command = run_cmsDriver(config_data, release)
     #---------- for test
-    nbEvents=configdata['parameters']['nbOfEvents']
-    conditions=configdata['parameters']['conditions']
-    beamspot=configdata['parameters']['beamspot']
-    geometry=configdata['parameters']['geometry']
-    era=configdata['parameters']['era']
-    inputCommands=configdata['parameters']['inputCommands']
-    procModifiers=configdata['parameters']['procModifiers']
-    filein=configdata['parameters']['filein']
-    customise=configdata['parameters']['customise_commands']
+    nbEvents=config_data['parameters']['nbOfEvents']
+    conditions=config_data['parameters']['conditions']
+    beamspot=config_data['parameters']['beamspot']
+    geometry=config_data['parameters']['geometry']
+    era=config_data['parameters']['era']
+    inputCommands=config_data['parameters']['inputCommands']
+    procModifiers=config_data['parameters']['procModifiers']
+    filein=config_data['parameters']['filein']
+    customise=config_data['parameters']['customise_commands']
 
     if procModifiers == 'empty':
         command = 'echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; ' + \
