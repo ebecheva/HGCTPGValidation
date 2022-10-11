@@ -100,7 +100,7 @@ def main(subsetconfig, release):
     pprint.pprint('Call cmsDriver')
     #command = run_cmsDriver(config_data, release)
     #---------- for test
-    nbEvents=config_data['parameters']['nbOfEvents']
+    nbEvents=config_data["parameters"]["nbOfEvents"]
     conditions=config_data['parameters']['conditions']
     beamspot=config_data['parameters']['beamspot']
     geometry=config_data['parameters']['geometry']
