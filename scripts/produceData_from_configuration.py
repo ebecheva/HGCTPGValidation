@@ -96,11 +96,13 @@ def main(subsetconfig, release):
     elif release=="test":
         print("Read config for test release")
         config_data=read_config(test)
+        nbEvents=config_data['parameters']['nbOfEvents']
+        pprint.pprint('nbEvents => ', nbOfEVents)
 
     pprint.pprint('Call cmsDriver')
     #command = run_cmsDriver(config_data, release)
     #---------- for test
-    nbEvents=config_data["parameters"]["nbOfEvents"]
+    nbEvents=config_data['parameters']['nbOfEvents']
     conditions=config_data['parameters']['conditions']
     beamspot=config_data['parameters']['beamspot']
     geometry=config_data['parameters']['geometry']
