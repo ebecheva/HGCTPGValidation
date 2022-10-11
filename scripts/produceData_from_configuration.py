@@ -96,7 +96,7 @@ def main(subsetconfig, release):
     elif release=="test":
         print("Read config for test release")
         config_data=read_config(test)
-        nbEvents=config_data['parameters']['nbOfEvents']
+        nbEvents=str(config_data['parameters']['nbOfEvents'])
         pprint.pprint('nbEvents => ', nbOfEVents)
 
     pprint.pprint('Call cmsDriver')
