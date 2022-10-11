@@ -99,7 +99,7 @@ pipeline {
                         module purge
                         module load python/3.9.9
                         python --version
-                        python ../../produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
                         '''     
                     }
                 }
@@ -132,7 +132,7 @@ pipeline {
                         module purge
                         module load python/3.9.9
                         python --version
-                        python ../../produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
                         '''            
                     }
                 }
