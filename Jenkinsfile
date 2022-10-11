@@ -99,8 +99,7 @@ pipeline {
                         module purge
                         module load python/3.9.9
                         python --version
-                        ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL
-                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL
+                        python ../../produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
                         '''     
                     }
                 }
@@ -129,8 +128,11 @@ pipeline {
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         export LABEL="ref"
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
-                        ../../../HGCTPGValidation/scripts/getConfig.sh default_subset $LABEL 
-                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL
+                        module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
+                        module purge
+                        module load python/3.9.9
+                        python --version
+                        python ../../produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
                         '''            
                     }
                 }
