@@ -37,6 +37,8 @@ def read_config(config):
 
 # Run cmsDriver
 def run_cmsDriver(configdata, release):
+    pprint.pprint(configdata['parameters']['nbOfEvents'])
+    pprint.pprint(configdata['parameters']['conditions'])
     nbEvents=configdata['parameters']['nbOfEvents']
     conditions=configdata['parameters']['conditions']
     beamspot=configdata['parameters']['beamspot']
@@ -94,9 +96,8 @@ def main(subsetconfig, release):
     elif release=="test":
         print("Read config for test release")
         config_data=read_config(test)
-        pprint.pprint("Debug2")
 
-    pprint.pprint('Will call cmsDriver')
+    pprint.pprint('Call cmsDriver')
     command = run_cmsDriver(config_data, release)
     sourceCmd = ['bash', '-c', command]
     sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
