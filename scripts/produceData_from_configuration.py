@@ -100,6 +100,8 @@ def main(subsetconfig, release):
         print("Read config for test release")
         config_data = read_config(test)
         print(type(config_data))
+        print(type(configdata['parameters']['conditions']))
+        print(type(config_data['parameters']['nbOfEvents']))
         pprint.pprint(config_data['parameters']['nbOfEvents'])
         pprint.pprint(nbEvents)
         print("Print test config from main")
