@@ -99,7 +99,7 @@ def main(subsetconfig, release):
     elif release=="test":
         print("Read config for test release")
         config_data=read_config(test)
-        os.system('python --version')
+        print(type(config_data))
         print("Print test config from main")
         for item, config_data in config_data.items():
             print(item, ":", config_data)
