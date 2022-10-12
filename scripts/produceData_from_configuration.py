@@ -30,6 +30,10 @@ def read_config(config):
     with open('../../../HGCTPGValidation/config/' + filename) as f:
         config = yaml.full_load(f)
         
+        nbEvents=config_data['parameters']['nbOfEvents']
+        pprint.pprint('nbEvents ==> ', nbOfEVents)
+        os.system('echo python --version')
+        
         for item, config in config.items():
             print(item, ":", config)
             
@@ -96,7 +100,8 @@ def main(subsetconfig, release):
     elif release=="test":
         print("Read config for test release")
         config_data=read_config(test)
-        nbEvents=str(config_data['parameters']['nbOfEvents'])
+        os.system('echo python --version')
+        nbEvents=config_data['parameters']['nbOfEvents']
         pprint.pprint('nbEvents => ', nbOfEVents)
 
     pprint.pprint('Call cmsDriver')
