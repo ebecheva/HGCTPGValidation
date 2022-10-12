@@ -101,7 +101,7 @@ def main(subsetconfig, release):
         config_data=read_config(test)
         os.system('python --version')
         print("Print test config from main")
-        for item, config in config.items():
+        for item, config_data in config_data.items():
             print(item, ":", config_data)
         #nbEvents=config_data['parameters']['nbOfEvents']
 
