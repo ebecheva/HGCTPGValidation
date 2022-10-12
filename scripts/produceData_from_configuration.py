@@ -24,9 +24,9 @@ def read_subset(config):
     return subset
     
 # Read the configuration file
-def read_config(config):
+def read_config(configuration):
     
-    filename = config + '.yaml'
+    filename = configuration + '.yaml'
     with open('../../../HGCTPGValidation/config/' + filename) as f:
         config = yaml.full_load(f)
         
