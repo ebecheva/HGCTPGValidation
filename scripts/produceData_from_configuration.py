@@ -30,7 +30,7 @@ def read_config(config):
     with open('../../../HGCTPGValidation/config/' + filename) as f:
         config = yaml.full_load(f)
         
-        nbEvents=config_data['parameters']['nbOfEvents']
+        nbEvents=config['parameters']['nbOfEvents']
         pprint.pprint('nbEvents ==> ', nbOfEVents)
         os.system('echo python --version')
         
