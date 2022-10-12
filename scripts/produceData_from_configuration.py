@@ -103,8 +103,7 @@ def main(subsetconfig, release):
         print("Print test config from main")
         for item, config_data in config_data.items():
             print(item, ":", config_data)
-        #nbEvents=config_data['parameters']['nbOfEvents']
-
+    
     pprint.pprint('Call cmsDriver')
     #command = run_cmsDriver(config_data, release)
     #---------- for test
