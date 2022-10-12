@@ -31,7 +31,6 @@ def read_config(config):
         config = yaml.full_load(f)
         
         nbEvents=config['parameters']['nbOfEvents']
-        pprint.pprint('nbEvents ==> ', str(nbEvents))
         os.system('echo python --version')
         
         for item, config in config.items():
@@ -102,7 +101,6 @@ def main(subsetconfig, release):
         config_data=read_config(test)
         os.system('echo python --version')
         nbEvents=config_data['parameters']['nbOfEvents']
-        pprint.pprint('nbEvents => ', str(nbEvents))
 
     pprint.pprint('Call cmsDriver')
     #command = run_cmsDriver(config_data, release)
