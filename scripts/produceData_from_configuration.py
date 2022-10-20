@@ -16,25 +16,34 @@ def read_subset(config):
     print('filename = ', filename)
     
     with open('../../../HGCTPGValidation/config/' + filename) as f:
-        subset = yaml.full_load(f)
+        try:
+            subset = yaml.full_load(f)
+            print(subset)
+        except yaml.YAMLError as e:
+            print(e)
      
-        for item, config in subset.items():
-            print(item, ":", config)
+        #for item, config in subset.items():
+        #    print(item, ":", config)
         
     return subset
     
 # Read the configuration file
 def read_config(configuration):
-    
+    os.system('python --version')
     filename = configuration + '.yaml'
     with open('../../../HGCTPGValidation/config/' + filename) as f:
-        config = yaml.full_load(f)
+        try:
+            config = yaml.full_load(f)
+            print("1 Print config")
+            print(config)
+            print("1 End Pront config")
+        except yaml.YAMLError as e:
+            print(e)
         
-        nbEvents=config['parameters']['nbOfEvents']
-        os.system('python --version')
-        
-        for item, config in config.items():
-            print(item, ":", config)
+        #nbEvents=config['parameters']['nbOfEvents']
+         
+        #for item, config in config.items():
+        #    print(item, ":", config)
             
     return config
 
@@ -100,27 +109,33 @@ def main(subsetconfig, release):
         print("Read config for test release")
         config_data = read_config(test)
         print(type(config_data))
-        print(type(config_data['parameters']['conditions']))
-        print(type(config_data['parameters']['nbOfEvents']))
-        pprint.pprint(config_data['parameters']['nbOfEvents'])
-        pprint.pprint(nbEvents)
+        print("2 Read config")
+        print(config_data)
+        print("2 End read config")
+        #print(type(config_data['parameters']['conditions']))
+        #print(type(config_data['parameters']['nbOfEvents']))
+        #pprint.pprint(config_data['parameters']['nbOfEvents'])
+        #pprint.pprint(nbEvents)
         print("Print test config from main")
-        for item, config_data in config_data.items():
-            print(item, ":", config_data)
+        #for item, config_data in config_data.items():
+        #    print(item, ":", config_data)
     
     pprint.pprint('Call cmsDriver')
     #command = run_cmsDriver(config_data, release)
     #---------- for test
     print(type(config_data))
-    nbEvents=config_data['parameters']['nbOfEvents']
-    conditions=config_data['parameters']['conditions']
-    beamspot=config_data['parameters']['beamspot']
-    geometry=config_data['parameters']['geometry']
-    era=config_data['parameters']['era']
-    inputCommands=config_data['parameters']['inputCommands']
-    procModifiers=config_data['parameters']['procModifiers']
-    filein=config_data['parameters']['filein']
-    customise=config_data['parameters']['customise_commands']
+    print("3 Read config")
+    print(config_data)
+    print("3 End read config")
+    #nbEvents=config_data['parameters']['nbOfEvents']
+    #conditions=config_data['parameters']['conditions']
+    #beamspot=config_data['parameters']['beamspot']
+    #geometry=config_data['parameters']['geometry']
+    #era=config_data['parameters']['era']
+    #inputCommands=config_data['parameters']['inputCommands']
+    #procModifiers=config_data['parameters']['procModifiers']
+    #filein=config_data['parameters']['filein']
+    #customise=config_data['parameters']['customise_commands']
 
     if procModifiers == 'empty':
         command = 'echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; ' + \
