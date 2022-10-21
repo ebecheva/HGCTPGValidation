@@ -17,12 +17,12 @@ def read_subset(config):
     print('filename = ', filename)
     
     with open('../../../HGCTPGValidation/config/' + filename) as f:
-        subset = yaml.full_load(f)
-        print(subset)
-     
-        #for item, config in subset.items():
-        #    print(item, ":", config)
-        
+        try:
+            subset = yaml.full_load(f)
+            print(subset)
+        except yaml.YAMLError as e:
+            print(e)
+            
     return subset
     
 # Read the configuration file
@@ -30,15 +30,11 @@ def read_config(configuration):
     os.system('python --version')
     filename = configuration + '.yaml'
     with open('../../../HGCTPGValidation/config/' + filename) as f:
-        config = yaml.full_load(f)
-        print("1 Print config")
-        print(config)
-        print("1 End Pront config")
-        
-        #nbEvents=config['parameters']['nbOfEvents']
-         
-        #for item, config in config.items():
-        #    print(item, ":", config)
+        try:
+            config = yaml.full_load(f)
+            print(config)         
+        except yaml.YAMLError as e:
+            print(e)
             
     return config
 
@@ -103,31 +99,15 @@ def main(subsetconfig, release):
     elif release=="test":
         print("Read config for test release")
         config_data = read_config(test)
-        print(type(config_data))
-        print("2 Read config")
-        print(config_data)
-        print("2 End read config")
-        #print(type(config_data['parameters']['conditions']))
-        #print(type(config_data['parameters']['nbOfEvents']))
-        #pprint.pprint(config_data['parameters']['nbOfEvents'])
-        #pprint.pprint(nbEvents)
-        print("Print test config from main")
-        #for item, config_data in config_data.items():
-        #    print(item, ":", config_data)
     else:
         print("The configuration doesn't contain the right name of release.")
     
     pprint.pprint('Call cmsDriver')
-    print(type(config_data))
-    print("3 Read config")
-    print(config_data)
-    print("3 End read config")
     command = run_cmsDriver(config_data, release)
 
     sourceCmd = ['bash', '-c', command]
     sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
     (out, err) = sourceProc.communicate() # wait for subprocess to finish
-
 
 if __name__ == "__main__":
     import optparse
