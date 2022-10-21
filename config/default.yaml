@@ -4,7 +4,7 @@ longName: Default configuration
 description: |
     Default TPG configuration, without any customization
 parameters:
-    nbOfEvents:50
+    nbOfEvents: 50
     conditions: auto:phase2_realistic_T15
     beamspot: HLLHC14TeV
     geometry: Extended2026D49
