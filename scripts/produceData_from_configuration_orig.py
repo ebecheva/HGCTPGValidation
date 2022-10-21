@@ -15,7 +15,7 @@ def read_subset(config):
     filename = config + '.yaml'
     print('filename = ', filename)
        
-    with open('../../' + filename) as f:
+    with open('../../../HGCTPGValidation/config/' + filename) as f:
         subset = yaml.full_load(f)
      
         for item, config in subset.items():
@@ -27,7 +27,7 @@ def read_subset(config):
 def read_config(config):
     
     filename = config + '.yaml'
-    with open('../../' + filename) as f:
+    with open('../../../HGCTPGValidation/config/' + filename) as f:
         config = yaml.full_load(f)
         
         #for item, config in config.items():
