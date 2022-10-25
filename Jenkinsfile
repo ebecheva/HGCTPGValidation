@@ -4,6 +4,8 @@ pipeline {
     }
     environment {
         EMAIL_TO = 'becheva@llr.in2p3.fr'
+        LABEL_TEST='test'
+        LABEL_REF='ref'
         CONFIG_SUBSET = 'default_subset'
     }
     options {
@@ -60,7 +62,6 @@ pipeline {
                         cd test_dir
                         source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-                        export LABEL="test"
                         if [ -z "$CHANGE_FORK" ]
                         then
                             export REMOTE="ebecheva"
@@ -68,7 +69,7 @@ pipeline {
                             export REMOTE=$CHANGE_FORK
                         fi
                         echo 'REMOTE= ', $REMOTE
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET $LABEL
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
                         '''
                     }
                 }
@@ -77,8 +78,7 @@ pipeline {
                         sh '''
                         source /cvmfs/cms.cern.ch/cmsset_default.sh
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        export LABEL="test"
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
+                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         scram build code-checks
                         scram build code-format
                         GIT_STATUS=`git status --porcelain`
@@ -94,13 +94,15 @@ pipeline {
                         sh '''
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        export LABEL="test"
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
+                        #export LABEL="test"
+                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
                         module load python/3.9.9
                         python --version
-                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label $LABEL
+                        echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
+                        echo 'LABEL_TEST = ' ${LABEL_TEST}
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
                         '''     
                     }
                 }
@@ -116,9 +118,8 @@ pipeline {
                         cd test_dir
                         source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-                        export LABEL="ref"
                         export REMOTE="ebecheva"
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_TARGET $CHANGE_TARGET $LABEL
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
                         '''
                     }
                 }           
@@ -127,13 +128,14 @@ pipeline {
                         sh '''
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        export LABEL="ref"
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
+                        #export LABEL="ref"
+                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
                         module load python/3.9.9
                         python --version
-                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label $LABEL
+                        echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
                         '''            
                     }
                 }
@@ -146,7 +148,7 @@ pipeline {
                 source ../HGCTPGValidation/env_install.sh
                 echo $PWD
                 source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_ref/src ./${REF_RELEASE}_HGCalTPGValidation_test/src ./GIFS
+                ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src ./GIFS
                 echo 'CHANGE_ID= ', $CHANGE_ID
                 echo '$CHANGE_TITLE= ', $CHANGE_TITLE
                 if [ -d /data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID ] 
