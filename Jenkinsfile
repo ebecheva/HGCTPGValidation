@@ -4,6 +4,7 @@ pipeline {
     }
     environment {
         EMAIL_TO = 'becheva@llr.in2p3.fr'
+        CONFIG_SUBSET = 'default_subset'
     }
     options {
         skipDefaultCheckout() 
@@ -99,7 +100,7 @@ pipeline {
                         module purge
                         module load python/3.9.9
                         python --version
-                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label $LABEL
                         '''     
                     }
                 }
@@ -132,7 +133,7 @@ pipeline {
                         module purge
                         module load python/3.9.9
                         python --version
-                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig default_subset --label $LABEL
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label $LABEL
                         '''            
                     }
                 }
