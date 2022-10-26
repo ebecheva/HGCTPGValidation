@@ -96,33 +96,35 @@ def run_cmsDriver(configdata, release):
     inputCommands=configdata['parameters']['inputCommands']
     procModifiers=configdata['parameters']['procModifiers']
     filein=configdata['parameters']['filein']
-    customise=configdata['parameters']['customise_commands']
+    customiseUser=configdata['parameters']['customise_commands']
+    customise=f'{customiseUser} "process.MessageLogger.files.out_{release} = dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"'
 
     if procModifiers == 'empty':
-        command = 'echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; ' + \
-        'cmsDriver.py hgcal_tpg_validation -n ' + str(nbEvents) + \
-        ' --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW ' + \
-        '--conditions ' + conditions + ' ' + \
-        '--beamspot ' + beamspot + ' ' + \
-        '--step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation ' + \
-        '--geometry ' + geometry + ' ' + '--era ' + era + ' ' + \
-        '--inputCommands ' + inputCommands + ' ' + \
-        '--filein ' + filein + ' ' + \
-        '--no_output ' + \
-        '--customise_commands ' + customise + ' ' + '"process.MessageLogger.files.out_"' + release + '" = dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"'
+        command = f"echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
+        cmsDriver.py hgcal_tpg_validation -n {str(nbEvents)} \
+         --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
+        --conditions {conditions} \
+        --beamspot {beamspot} \
+        --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation \
+        --geometry {geometry} --era {era} \
+        --inputCommands {inputCommands} \
+        --filein {filein} \
+        --no_output \
+        --customise_commands {customise}"    
     else:
-        command = 'echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`;' + \
-        'cmsDriver.py hgcal_tpg_validation -n ' + str(nbEvents) + \
-        ' --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW ' + \
-        '--conditions ' + conditions + ' ' + \
-        '--beamspot ' + beamspot + ' ' + \
-        '--step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation ' + \
-        '--geometry ' + geometry + ' ' + '--era ' + era + ' ' + '--inputCommands ' + inputCommands + ' ' + \
-        '--procModifiers ' + procModifiers + ' ' + \
-        '--inputCommands ' + inputCommands + ' ' + \
-        '--filein ' + filein + ' ' + \
-        '--no_output ' + \
-        '--customise_commands ' + customise + ' ' + '"process.MessageLogger.files.out_"' + release + '"= dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"'
+        command = f"echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
+        cmsDriver.py hgcal_tpg_validation -n {str(nbEvents)} \
+         --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
+        --conditions {conditions} \
+        --beamspot {beamspot} \
+        --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation \
+        --geometry {geometry} --era {era} \
+        --inputCommands {inputCommands} \
+        --procModifiers {procModifiers} \
+        --filein {filein} \
+        --no_output \
+        --customise_commands {customise}"
+    
     pprint.pprint(command)
     return command
     
