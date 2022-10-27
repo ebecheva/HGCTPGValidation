@@ -23,6 +23,7 @@ pipeline {
                 echo 'Job name = ' ${JOB_NAME}
                 JENKINS_JOB_NAME=$(echo ${JOB_NAME} | cut -d'/' -f 2)
                 echo 'The job name is: ' $JENKINS_JOB_NAME
+                '''
                 script{
                     switch('${env.JENKINS_JOB_NAME}'){
                         case 'HGC TPG Automatic Validation':
@@ -42,11 +43,12 @@ pipeline {
                             env.BRANCH_VAL='Jenkins-newFeature_readMulticonfig'
                     }
                 }
+                sh'''
                 echo 'Selected email address ${env.EMAIL_TO}'
                 echo 'BASE_REMOTE = ${env.BASE_REMOTE}'
                 echo 'DATA_DIR = ${env.DATA_DIR}'
                 echo 'BRANCH_VAL = ${env.BRANCH_VAL}'
-            '''
+               '''
             }   
         }
         stage('Initialize'){
