@@ -57,9 +57,9 @@ pipeline {
                     steps{
                         echo 'Clean the working environment.'
                         sh '''
-                        if [ -d "/data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID" ] 
+                        if [ -d "/data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID" ] 
                         then
-                            rm -rf /data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID
+                            rm -rf /data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID
                         fi
                         '''
                     }
@@ -76,7 +76,7 @@ pipeline {
                         then
                             rm -rf HGCTPGValidation
                         fi
-                        git clone -b Jenkins-newFeature_readMulticonfig https://github.com/ebecheva/HGCTPGValidation HGCTPGValidation
+                        git clone -b ${env.BRANCH_VAL} https://github.com/${env.BASE_REMOTE}/HGCTPGValidation HGCTPGValidation
                         source HGCTPGValidation/env_install.sh
                         pip install attrs
                         if [ -d "./test_dir" ] 
@@ -190,12 +190,12 @@ pipeline {
                 ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src ./GIFS
                 echo 'CHANGE_ID= ', $CHANGE_ID
                 echo '$CHANGE_TITLE= ', $CHANGE_TITLE
-                if [ -d /data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID ] 
+                if [ -d /data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID ] 
                 then
                     echo "Directory " PR$CHANGE_ID " exists." 
-                    rm -rf /data/jenkins/workspace/validation_data_test_emilia//PR$CHANGE_ID
+                    rm -rf /data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID
                 fi
-                export data_dir=/data/jenkins/workspace/validation_data_test_emilia/
+                export data_dir=/data/jenkins/workspace/${env.DATA_DIR}/
                 mkdir $data_dir/PR$CHANGE_ID
                 mkdir $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
                 cp -rf GIFS/. $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
