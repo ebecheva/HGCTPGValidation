@@ -12,6 +12,41 @@ pipeline {
         skipDefaultCheckout() 
     }
     stages {
+        stage('SetEnvVar'){
+            steps{
+                sh'''
+                echo 'RewriteEnvVar stage'
+                echo 'LABEL_TEST ' ${LABEL_TEST}
+                echo 'EMAIL_TO = ' ${EMAIL_TO}
+                echo 'CONFIG_SUBSET =' ${CONFIG_SUBSET}
+                echo 'Job base name = ' ${JOB_BASE_NAME}
+                echo 'Job name = ' ${JOB_NAME}
+                script{
+                    switch('${env.JOB_NAME}'){
+                        case 'HGC TPG Automatic Validation':
+                            env.EMAIL_TO='jenkins@llr.in2p3.fr'
+                            env.BASE_REMOTE='hgc-tpg'
+                            env.DATA_DIR='validation_data'
+                            env.BRANCH_VAL='master'
+                        case 'HGC TPG Automatic Validation - TEST':
+                            env.EMAIL_TO='becheva@llr.in2p3.fr'
+                            env.BASE_REMOTE='hgc-tpg'
+                            env.DATA_DIR='validation_data_test'
+                            env.BRANCH_VAL='Jenkins-developments-test'
+                        case 'HGC TPG Automatic Validation - TEST ebecheva':
+                            env.EMAIL_TO='emilia.becheva@llr.in2p3.fr'
+                            env.BASE_REMOTE='ebecheva'
+                            env.DATA_DIR='validation_data_test_emilia'
+                            env.BRANCH_VAL='Jenkins-newFeature_readMulticonfig'
+                    }
+                }
+                echo 'Selected email address ${env.EMAIL_TO}'
+                echo 'BASE_REMOTE = ${env.BASE_REMOTE}'
+                echo 'DATA_DIR = ${env.DATA_DIR}'
+                echo 'BRANCH_VAL = ${env.BRANCH_VAL}'
+            '''
+            }   
+        }
         stage('Initialize'){
             stages{
                 stage('CleanEnv'){
