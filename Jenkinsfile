@@ -20,36 +20,41 @@ pipeline {
                 echo 'EMAIL_TO = ' ${EMAIL_TO}
                 echo 'CONFIG_SUBSET =' ${CONFIG_SUBSET}
                 echo 'Job base name = ' ${JOB_BASE_NAME}
-                echo 'Job name = ' ${JOB_NAME}
+                echo '===Job name = ' ${JOB_NAME}
                 JENKINS_JOB_NAME=$(echo ${JOB_NAME} | cut -d'/' -f 2)
-                echo 'The job name is: ' $JENKINS_JOB_NAME
-                '''
-                script{
-                    switch('${env.JENKINS_JOB_NAME}'){
-                        case 'HGC TPG Automatic Validation':
-                            env.EMAIL_TO='jenkins@llr.in2p3.fr'
-                            env.BASE_REMOTE='hgc-tpg'
-                            env.DATA_DIR='validation_data'
-                            env.BRANCH_VAL='master'
-                        case 'HGC TPG Automatic Validation - TEST':
-                            env.EMAIL_TO='becheva@llr.in2p3.fr'
-                            env.BASE_REMOTE='hgc-tpg'
-                            env.DATA_DIR='validation_data_test'
-                            env.BRANCH_VAL='Jenkins-developments-test'
-                        case 'HGC TPG Automatic Validation - TEST ebecheva':
-                            env.EMAIL_TO='emilia.becheva@llr.in2p3.fr'
-                            env.BASE_REMOTE='ebecheva'
-                            env.DATA_DIR='validation_data_test_emilia'
-                            env.BRANCH_VAL='Jenkins-newFeature_readMulticonfig'
-                    }
-                }
-                sh'''
-                echo 'Selected email address ${env.EMAIL_TO}'
-                echo 'BASE_REMOTE = ${env.BASE_REMOTE}'
-                echo 'DATA_DIR = ${env.DATA_DIR}'
-                echo 'BRANCH_VAL = ${env.BRANCH_VAL}'
+                case $JENKINS_JOB_NAME in
+                    'HGC TPG Automatic Validation')
+                        EMAIL_TO='jenkins@llr.in2p3.fr'
+                        BASE_REMOTE='hgc-tpg'
+                        DATA_DIR='validation_data'
+                        BRANCH_VAL='master'
+                    ;;
+                    'HGC TPG Automatic Validation - TEST')
+                        EMAIL_TO='becheva@llr.in2p3.fr'
+                        BASE_REMOTE='hgc-tpg'
+                        DATA_DIR='validation_data_test'
+                        BRANCH_VAL='Jenkins-developments-test'
+                    ;;
+                    'HGC TPG Automatic Validation - TEST ebecheva')
+                        EMAIL_TO='emilia.becheva@llr.in2p3.fr'
+                        BASE_REMOTE='ebecheva'
+                        DATA_DIR='validation_data_test_emilia'
+                        BRANCH_VAL='Jenkins-newFeature_readMulticonfig'
+                    ;;
+                    esac
+                echo "script DATA_DIR = ${DATA_DIR}"
+                echo "script BRANCH_VAL = ${BRANCH_VAL}"
+                echo "Selected email address ${EMAIL_TO}"
+                echo "BASE_REMOTE = ${BASE_REMOTE}"
+                echo "DATA_DIR = ${DATA_DIR}"
+                echo "BRANCH_VAL = ${BRANCH_VAL}"
                '''
-            }   
+               script{
+                   env.DATA_DIR="validation_data_test_emilia"
+                   env.BASE_REMOTE="ebecheva"
+                   env.BRANCH_VAL="Jenkins-newFeature_readMulticonfig"
+               }
+            }  
         }
         stage('Initialize'){
             stages{
@@ -57,9 +62,9 @@ pipeline {
                     steps{
                         echo 'Clean the working environment.'
                         sh '''
-                        if [ -d "/data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID" ] 
+                        if [ -d "/data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID" ] 
                         then
-                            rm -rf /data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID
+                            rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
                         fi
                         '''
                     }
@@ -76,7 +81,7 @@ pipeline {
                         then
                             rm -rf HGCTPGValidation
                         fi
-                        git clone -b ${env.BRANCH_VAL} https://github.com/${env.BASE_REMOTE}/HGCTPGValidation HGCTPGValidation
+                        git clone -b ${BRANCH_VAL} https://github.com/${BASE_REMOTE}/HGCTPGValidation HGCTPGValidation
                         source HGCTPGValidation/env_install.sh
                         pip install attrs
                         if [ -d "./test_dir" ] 
@@ -103,7 +108,7 @@ pipeline {
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
                         if [ -z "$CHANGE_FORK" ]
                         then
-                            export REMOTE="ebecheva"
+                            export REMOTE=$BASE_REMOTE
                         else
                             export REMOTE=$CHANGE_FORK
                         fi
@@ -133,7 +138,6 @@ pipeline {
                         sh '''
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        #export LABEL="test"
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
@@ -157,8 +161,7 @@ pipeline {
                         cd test_dir
                         source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-                        export REMOTE="ebecheva"
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
                         '''
                     }
                 }           
@@ -167,7 +170,6 @@ pipeline {
                         sh '''
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        #export LABEL="ref"
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
@@ -190,12 +192,12 @@ pipeline {
                 ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src ./GIFS
                 echo 'CHANGE_ID= ', $CHANGE_ID
                 echo '$CHANGE_TITLE= ', $CHANGE_TITLE
-                if [ -d /data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID ] 
+                if [ -d /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID ] 
                 then
                     echo "Directory " PR$CHANGE_ID " exists." 
-                    rm -rf /data/jenkins/workspace/${env.DATA_DIR}/PR$CHANGE_ID
+                    rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
                 fi
-                export data_dir=/data/jenkins/workspace/${env.DATA_DIR}/
+                export data_dir=/data/jenkins/workspace/${DATA_DIR}/
                 mkdir $data_dir/PR$CHANGE_ID
                 mkdir $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
                 cp -rf GIFS/. $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
