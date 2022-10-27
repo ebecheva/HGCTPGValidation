@@ -21,8 +21,10 @@ pipeline {
                 echo 'CONFIG_SUBSET =' ${CONFIG_SUBSET}
                 echo 'Job base name = ' ${JOB_BASE_NAME}
                 echo 'Job name = ' ${JOB_NAME}
+                JENKINS_JOB_NAME=$(echo ${JOB_NAME} | cut -d'/' -f 2)
+                echo 'The job name is: ' $JENKINS_JOB_NAME
                 script{
-                    switch('${env.JOB_NAME}'){
+                    switch('${env.JENKINS_JOB_NAME}'){
                         case 'HGC TPG Automatic Validation':
                             env.EMAIL_TO='jenkins@llr.in2p3.fr'
                             env.BASE_REMOTE='hgc-tpg'
