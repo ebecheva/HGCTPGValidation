@@ -17,7 +17,8 @@ pipeline {
                 script{
                     String s = env.JOB_NAME
                     s = s.substring(s.indexOf("/") + 1)
-                    s = s.substring(0, s.indexOf("/")); 
+                    s = s.substring(0, s.indexOf("/"));
+                    println(s);
                     switch(s){
                         case 'HGC TPG Automatic Validation':
                             env.EMAIL_TO='jenkins@llr.in2p3.fr'
