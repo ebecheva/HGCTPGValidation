@@ -19,9 +19,9 @@ pipeline {
                         case 'HGC TPG Automatic Validation':
                             def props = readProperties file: 'job.properties'
                         case 'HGC TPG Automatic Validation - TEST':
-                            def props = readProperties file: 'job.properties_TEST’
+                            def props = readProperties file: 'job.properties_TEST'
                         case 'HGC TPG Automatic Validation - TEST ebecheva':
-                            def props = readProperties file: 'job.properties_TEST_eb’
+                            def props = readProperties file: 'job.properties_TEST_eb'
                     }
                     env.BASE_REMOTE = props.BASE_REMOTE
                     env.DATA_DIR = props.DATA_DIR
