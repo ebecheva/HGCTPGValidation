@@ -16,13 +16,6 @@ pipeline {
             steps {
             echo "JENKINS_HOME = ${JENKINS_HOME}"
                 // Use a script block to do custom scripting
-                script {
-                    def props = readProperties file: '${JENKINS_HOME}/job.properties' 
-                    env.BASE_REMOTE = props.BASE_REMOTE
-                    env.DATA_DIR = props.DATA_DIR
-                    env.BRANCH_VAL = props.BRANCH_VAL
-                    env.EMAIL_TO = props.EMAIL_TO
-                }
                 echo "BASE_REMOTE =>  is $BASE_REMOTE"
                 echo "DATA_DIR =>  is $DATA_DIR"
                 echo "BRANCH_VAL =>  is $BRANCH_VAL"
