@@ -12,7 +12,7 @@ pipeline {
         skipDefaultCheckout() 
     }
     stages {
-        stage(“reading properties from properties file”) {
+        stage('Reading properties from properties file') {
             steps {
                 // Use a script block to do custom scripting
                 script {
