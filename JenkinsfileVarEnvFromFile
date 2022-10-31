@@ -15,6 +15,9 @@ pipeline {
         stage('Reading properties from properties file') {
             steps {
                 script {
+                    String s = env.JOB_NAME
+                    s = s.substring(s.indexOf("/") + 1)
+                    s = s.substring(0, s.indexOf("/")); 
                     switch(s){
                         case 'HGC TPG Automatic Validation':
                             def props = readProperties file: 'job.properties'
