@@ -16,7 +16,7 @@ pipeline {
             steps {
                 // Use a script block to do custom scripting
                 script {
-                    def props = readProperties file: 'job.properties' 
+                    def props = readProperties file: '${JENKINS_HOME}/job.properties' 
                     env.BASE_REMOTE = props.BASE_REMOTE
                     env.DATA_DIR = props.DATA_DIR
                     env.BRANCH_VAL = props.BRANCH_VAL
