@@ -20,21 +20,16 @@ pipeline {
                     s = s.substring(0, s.indexOf("/"));
                     println(s);
                     switch(s){
-                        case 'HGC TPG Automatic Validation':
-                            env.EMAIL_TO='jenkins@llr.in2p3.fr'
-                            env.BASE_REMOTE='hgc-tpg'
-                            env.DATA_DIR='validation_data'
-                            env.BRANCH_VAL='master'
                         case 'HGC TPG Automatic Validation - TEST':
-                            env.EMAIL_TO='becheva@llr.in2p3.fr'
-                            env.BASE_REMOTE='hgc-tpg'
-                            env.DATA_DIR='validation_data_test'
-                            env.BRANCH_VAL='Jenkins-developments-test'
+                            env.EMAIL_TO=env.EMAIL_TO_EB
+                            env.BASE_REMOTE=env.BASE_REMOTE_TEST
+                            env.DATA_DIR=env.DATA_DIR_TEST
+                            env.BRANCH_VAL=env.BRANCH_VAL_TEST
                         case 'HGC TPG Automatic Validation - TEST ebecheva':
-                            env.EMAIL_TO='emilia.becheva@llr.in2p3.fr'
-                            env.BASE_REMOTE='ebecheva'
-                            env.DATA_DIR='validation_data_test_emilia'
-                            env.BRANCH_VAL='Jenkins-newFeature_readMulticonfig'
+                            env.EMAIL_TO=env.EMAIL_TO_EB
+                            env.BASE_REMOTE=env.BASE_REMOTE_EB
+                            env.DATA_DIR=env.DATA_DIR_EB
+                            env.BRANCH_VAL=env.BRANCH_VAL_EB
                     }
                 }
             }  
