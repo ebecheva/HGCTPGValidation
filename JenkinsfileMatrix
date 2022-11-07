@@ -136,6 +136,7 @@ pipeline {
                             python --version
                             echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                             echo 'LABEL_TEST = ' ${LABEL_TEST}
+                            echo 'Test Produce Do Build for ${TEST} - ${REF}'
                             python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
                             '''     
                         }
@@ -167,6 +168,7 @@ pipeline {
                             module load python/3.9.9
                             python --version
                             echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
+                            echo 'Ref Produce Do Build for ${TEST} - ${REF}'
                             python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
                             '''            
                         }
@@ -188,6 +190,7 @@ pipeline {
                         echo "Directory " PR$CHANGE_ID " exists." 
                         rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
                     fi
+                    echo 'Display Do Build for ${TEST} - ${REF}'
                     export data_dir=/data/jenkins/workspace/${DATA_DIR}/
                     mkdir $data_dir/PR$CHANGE_ID
                     mkdir $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
