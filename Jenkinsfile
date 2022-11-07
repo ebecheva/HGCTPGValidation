@@ -3,7 +3,6 @@ pipeline {
         label 'llrgrhgtrig.in2p3.fr'
     }
     environment {
-        EMAIL_TO = 'becheva@llr.in2p3.fr'
         LABEL_TEST='test'
         LABEL_REF='ref'
         CONFIG_SUBSET = 'default_subset'
