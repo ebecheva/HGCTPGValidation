@@ -71,24 +71,7 @@ pipeline {
                         '''
                     }
                 }
-            }
-        }
-        stage('Build'){
-            matrix {
-                axes {
-                    axis {
-                        name 'TEST'
-                        values 'default', 'bcstc', 'newProcessors'
-                    }
-                    axis {
-                        name 'REF'
-                        values 'default', 'bcstc', 'newProcessors'
-                    }
-                }
-                stages{
-                    stage('BuildCMSSWTest'){
-                    stages{
-                        stage('Install'){
+                stage('InstallTest'){
                             steps {
                                 echo 'InstallCMSSW Test step..'
                                 sh '''
@@ -106,8 +89,8 @@ pipeline {
                                 ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
                                 '''
                             }
-                        }
-                        stage('QualityChecks'){
+                }
+                stage('QualityChecks'){
                             steps{
                                 sh '''
                                 source /cvmfs/cms.cern.ch/cmsset_default.sh
@@ -122,7 +105,36 @@ pipeline {
                                 fi
                                 '''
                             }
-                        }
+                }
+                stage('InstallRef'){
+                            steps {
+                                echo 'InstallCMSSW Ref step..'
+                                sh '''
+                                pwd
+                                cd test_dir
+                                source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
+                                source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
+                                ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
+                                '''
+                            }
+                }  
+            }
+        }
+        stage('Build'){
+            matrix {
+                axes {
+                    axis {
+                        name 'TEST'
+                        values 'default', 'bcstc', 'newProcessors'
+                    }
+                    axis {
+                        name 'REF'
+                        values 'default', 'bcstc', 'newProcessors'
+                    }
+                }
+                stages{
+                    stage('BuildCMSSWTest'){
+                    stages{
                         stage('Produce'){
                             steps {
                                 sh '''
@@ -144,18 +156,7 @@ pipeline {
                 }
                 stage('BuildCMSSWRef'){
                     stages{
-                        stage('Install'){
-                            steps {
-                                echo 'InstallCMSSW Ref step..'
-                                sh '''
-                                pwd
-                                cd test_dir
-                                source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                                source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-                                ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
-                                '''
-                            }
-                        }           
+         
                         stage('Produce'){
                             steps {
                                 sh '''
