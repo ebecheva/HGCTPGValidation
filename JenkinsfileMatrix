@@ -149,6 +149,7 @@ pipeline {
                                 echo 'LABEL_TEST = ' ${LABEL_TEST}
                                 echo 'Test Produce Do Build for ${TEST} - ${REF}'
                                 python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --config ${TEST}
+                                ls -lrt
                                 '''     
                             }
                         }
@@ -170,6 +171,7 @@ pipeline {
                                 echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                                 echo 'Ref Produce Do Build for ${TEST} - ${REF}'
                                 python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF} --config ${REF} 
+                                ls -lrt
                                 '''            
                             }
                         }
