@@ -28,7 +28,7 @@ echo $config
 
 if [ !${relversion}_HGCalTPGValidation_$config_$label ]
 then
-    echo 'Create working directory ${relversion}_HGCalTPGValidation_$config_$label'
+    echo 'Create working directory ' ${relversion}_HGCalTPGValidation_$config_$label
     source /cvmfs/cms.cern.ch/cmsset_default.sh
     module purge
     scramv1 p -n ${relversion}_HGCalTPGValidation_$config_$label CMSSW $relversion
