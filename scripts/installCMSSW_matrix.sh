@@ -31,8 +31,8 @@ then
     echo 'Create working directory ' ${relversion}_HGCalTPGValidation_${config}_$label
     source /cvmfs/cms.cern.ch/cmsset_default.sh
     module purge
-    scramv1 p -n ${relversion}_HGCalTPGValidation_$config_$label CMSSW $relversion
-    cd ${relversion}_HGCalTPGValidation_$config_$label/src
+    scramv1 p -n ${relversion}_HGCalTPGValidation_${config}_$label CMSSW $relversion
+    cd ${relversion}_HGCalTPGValidation_${config}_$label/src
     echo $PWD
     eval `scramv1 runtime -sh`
     git cms-merge-topic $remote:$branch
@@ -40,5 +40,5 @@ then
     git cms-merge-topic ebecheva:$branch_ref
     scram b -j8
 else
-    echo 'The directory ${relversion}_HGCalTPGValidation_$config_$label already exists.'
+    echo 'The directory ${relversion}_HGCalTPGValidation_${config}_$label already exists.'
 fi
