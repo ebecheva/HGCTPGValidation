@@ -41,4 +41,5 @@ then
     scram b -j8
 else
     echo 'The directory ${relversion}_HGCalTPGValidation_${config}_$label already exists.'
+    exit
 fi
