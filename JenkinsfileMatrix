@@ -125,11 +125,11 @@ pipeline {
                 axes {
                     axis {
                         name 'TEST'
-                        values 'default', 'bcstc', 'newProcessors'
+                        values 'bcstc'
                     }
                     axis {
                         name 'REF'
-                        values 'default', 'bcstc', 'newProcessors'
+                        values 'default'
                     }
                 }
                 stages{
