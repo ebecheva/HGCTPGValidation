@@ -103,7 +103,7 @@ pipeline {
 										export REMOTE=$CHANGE_FORK
 									fi
 									echo 'REMOTE= ', $REMOTE
-									../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
+									../HGCTPGValidation/scripts/installCMSSW_matrix.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST} ${TEST}
 									'''
 								}
 							}
@@ -112,7 +112,7 @@ pipeline {
 									sh '''
 									source /cvmfs/cms.cern.ch/cmsset_default.sh
 									source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-									cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+									cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST}/src
 									scram build code-checks
 									scram build code-format
 									GIT_STATUS=`git status --porcelain`
@@ -128,7 +128,7 @@ pipeline {
 									sh '''
 									pwd
 									source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-									cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+									cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST}/src
 									module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
 									module purge
 									module load python/3.9.9
@@ -152,7 +152,7 @@ pipeline {
 									cd test_dir
 									source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
 									source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-									../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
+									../HGCTPGValidation/scripts/installCMSSW_matrix.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF} ${REF}
 									'''
 								}
 							}           
@@ -161,7 +161,7 @@ pipeline {
 									sh '''
 									pwd
 									source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-									cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
+									cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF}/src
 									module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
 									module purge
 									module load python/3.9.9
@@ -181,7 +181,7 @@ pipeline {
 							source ../HGCTPGValidation/env_install.sh
 							echo $PWD
 							source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-							../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src ./GIFS
+							../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF}/src ./${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST}/src ./GIFS
 							echo 'CHANGE_ID= ', $CHANGE_ID
 							echo '$CHANGE_TITLE= ', $CHANGE_TITLE
 							if [ -d /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID ] 
