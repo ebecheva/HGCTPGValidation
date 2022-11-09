@@ -26,13 +26,18 @@ echo $label
 config=$7
 echo $config
 
-source /cvmfs/cms.cern.ch/cmsset_default.sh
-module purge
-scramv1 p -n ${relversion}_HGCalTPGValidation_$config_$label CMSSW $relversion
-cd ${relversion}_HGCalTPGValidation_$config_$label/src
-echo $PWD
-eval `scramv1 runtime -sh`
-git cms-merge-topic $remote:$branch
-git checkout -b local_$branch $remote/$branch
-git cms-merge-topic ebecheva:$branch_ref
-scram b -j8
+if [ !${relversion}_HGCalTPGValidation_$config_$label ]
+then
+    source /cvmfs/cms.cern.ch/cmsset_default.sh
+    module purge
+    scramv1 p -n ${relversion}_HGCalTPGValidation_$config_$label CMSSW $relversion
+    cd ${relversion}_HGCalTPGValidation_$config_$label/src
+    echo $PWD
+    eval `scramv1 runtime -sh`
+    git cms-merge-topic $remote:$branch
+    git checkout -b local_$branch $remote/$branch
+    git cms-merge-topic ebecheva:$branch_ref
+    scram b -j8
+else
+    echo 'The directory ${relversion}_HGCalTPGValidation_$config_$label already exists.'
+fi
