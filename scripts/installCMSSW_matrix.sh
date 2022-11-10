@@ -26,7 +26,7 @@ echo $label
 config=$7
 echo $config
 
-if [ !${relversion}_HGCalTPGValidation_$config_$label ]
+if [ !${relversion}_HGCalTPGValidation_${config}_$label ]
 then
     echo 'Create working directory ' ${relversion}_HGCalTPGValidation_${config}_$label
     source /cvmfs/cms.cern.ch/cmsset_default.sh
