@@ -165,7 +165,7 @@ pipeline {
                             stage('Produce'){
                                 steps {
                                     sh '''
-                                    if [ !${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF} ]
+                                    if [ ${TEST} != ${REF} ]
                                     then
                                         pwd
                                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
