@@ -127,17 +127,22 @@ pipeline {
                             stage('Produce'){
                                 steps {
                                     sh '''
-                                    pwd
-                                    source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                                    cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST}/src
-                                    module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
-                                    module purge
-                                    module load python/3.9.9
-                                    python --version
-                                    echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                                    echo 'LABEL_TEST = ' ${LABEL_TEST}
-                                    echo 'Test Produce Do Build for ${TEST} - ${REF}'
-                                    python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --config ${TEST}
+                                    if [ !${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST} ]
+                                    then
+                                        pwd
+                                        source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
+                                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST}/src
+                                        module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
+                                        module purge
+                                        module load python/3.9.9
+                                        python --version
+                                        echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
+                                        echo 'LABEL_TEST = ' ${LABEL_TEST}
+                                        echo 'Test Produce Do Build for ${TEST} - ${REF}'
+                                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --config ${TEST}
+                                    else
+                                        'The directory ${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST} already exists.'
+                                    fi
                                     '''     
                                 }
                             }
@@ -160,16 +165,22 @@ pipeline {
                             stage('Produce'){
                                 steps {
                                     sh '''
-                                    pwd
-                                    source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                                    cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF}/src
-                                    module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
-                                    module purge
-                                    module load python/3.9.9
-                                    python --version
-                                    echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                                    echo 'Ref Produce Do Build for ${TEST} - ${REF}'
-                                    python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF} --config ${REF}
+                                    if [ !${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF} ]
+                                    then
+                                        pwd
+                                        source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
+                                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF}/src
+                                        module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
+                                        module purge
+                                        module load python/3.9.9
+                                        python --version
+                                        echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
+                                        echo 'Ref Produce Do Build for ${TEST} - ${REF}'
+                                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF} --config ${REF}
+                                    else
+                                        'The directory ${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF} already exists.'
+                                        exit
+                                    fi
                                     '''            
                                 }
                             }
