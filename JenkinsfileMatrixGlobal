@@ -141,7 +141,7 @@ pipeline {
                                         echo 'Test Produce Do Build for ${TEST} - ${REF}'
                                         python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --config ${TEST}
                                     else
-                                        'The directory ${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST} already exists.'
+                                        echo 'The directory ${REF_RELEASE}_HGCalTPGValidation_${TEST}_${LABEL_TEST} already exists.'
                                     fi
                                     '''     
                                 }
@@ -178,7 +178,7 @@ pipeline {
                                         echo 'Ref Produce Do Build for ${TEST} - ${REF}'
                                         python ../../../HGCTPGValidation/scripts/produceData_from_configuration_matrix.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF} --config ${REF}
                                     else
-                                        'The directory ${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF} already exists.'
+                                        echo 'The directory ${REF_RELEASE}_HGCalTPGValidation_${REF}_${LABEL_REF} already exists.'
                                         exit
                                     fi
                                     '''            
