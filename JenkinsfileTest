@@ -2,7 +2,7 @@ pipeline{
   agent any
   stages{
     stage("ReadYamlFile"){
-    
+      sh 'python3 --version'
     }
   }
 }
