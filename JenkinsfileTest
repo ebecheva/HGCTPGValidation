@@ -21,8 +21,8 @@ pipeline{
           env.SUBSET_TEST_1 = configVal['configuration']['test'][0]
           env.SUBSET_REF_2 = configVal['configuration']['ref'][1]
           env.SUBSET_TEST_2 = configVal['configuration']['test'][1]
-          env.SUBSET_REF_3 = configVal['configuration']['ref'][3]
-          env.SUBSET_TEST_3 = configVal['configuration']['test'][3]
+          env.SUBSET_REF_3 = configVal['configuration']['ref'][2]
+          env.SUBSET_TEST_3 = configVal['configuration']['test'][2]
         }
         sh '''
         echo 'SUBSET_NAME = ' $SUBSET_NAME
