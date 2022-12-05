@@ -1,5 +1,7 @@
 pipeline{
-  agent any
+  agent {
+    label 'llrgrhgtrig.in2p3.fr'
+  }
   stages{
     stage("ReadYamlFile"){
       steps{
