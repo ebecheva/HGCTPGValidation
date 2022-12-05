@@ -6,14 +6,17 @@ pipeline{
     stage("ReadYamlFile"){
       steps{
         sh 'python3 --version'
-        def configVal = readYaml file: "./config/default_multi_subset.yaml"
-        echo "configVal: " + configVal
-        echo configVal['subsetName']
-        echo configVal['description']
-        echo configVal['configuration']['ref'][0]
-        echo configVal['configuration']['test'][0]
-        echo configVal['configuration']['ref'][1]
-        echo configVal['configuration']['test'][1]
+        sh 'pwd'
+        script{
+          def configVal = readYaml file: "./config/default_multi_subset.yaml"
+          echo "configVal: " + configVal
+          echo configVal['subsetName']
+          echo configVal['description']
+          echo configVal['configuration']['ref'][0]
+          echo configVal['configuration']['test'][0]
+          echo configVal['configuration']['ref'][1]
+          echo configVal['configuration']['test'][1]
+        }
       }
     }
   }
