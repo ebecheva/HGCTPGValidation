@@ -1,0 +1,16 @@
+---
+applications:
+- name: service-api
+  target: https://api.dev.roytuts.com/
+  space: app-dev
+  organization: roytuts-com
+  disk_quota: 1024M
+  memory: 1024M
+  instances: 2
+  buildpacks:
+  - java-buildpack-openjdk-v4-49-1
+  stack: cflinuxfs3
+  routes:
+  - route: dev.roytuts.com/serviceapi-dev
+  services:
+    - svcmysql
