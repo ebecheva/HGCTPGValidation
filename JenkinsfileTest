@@ -28,6 +28,10 @@ pipeline{
         echo 'SUBSET_NAME = ' $SUBSET_NAME
         echo 'SUBSET_REF_1 = ' $SUBSET_REF_1
         echo 'SUBSET_TEST_1 = ' $SUBSET_TEST_1
+        echo 'SUBSET_REF_2 = ' $SUBSET_REF_2
+        echo 'SUBSET_TEST_2 = ' $SUBSET_TEST_2
+        echo 'SUBSET_REF_3 = ' $SUBSET_REF_3
+        echo 'SUBSET_TEST_3 = ' $SUBSET_TEST_3
         '''
       }
     }
