@@ -7,32 +7,7 @@ pipeline{
     LABEL_REF='ref'
     CONFIG_SUBSET = 'default_subset'
   }
-  options {
-    skipDefaultCheckout() 
-  }
   stages{
-    stage('SetEnvVar'){
-      steps{
-        script{
-            String s = env.JOB_NAME
-            s = s.substring(s.indexOf("/") + 1)
-            s = s.substring(0, s.indexOf("/"));
-            println(s);
-            switch(s){
-            case 'HGC TPG Automatic Validation - TEST':
-                env.EMAIL_TO=env.EMAIL_TO_EB
-                env.BASE_REMOTE=env.BASE_REMOTE_TEST
-                env.DATA_DIR=env.DATA_DIR_TEST
-                env.BRANCH_VAL=env.BRANCH_VAL_TEST
-            case 'HGC TPG Automatic Validation - TEST ebecheva':
-                env.EMAIL_TO=env.EMAIL_TO_EB
-                env.BASE_REMOTE=env.BASE_REMOTE_EB
-                env.DATA_DIR=env.DATA_DIR_EB
-                env.BRANCH_VAL=env.BRANCH_VAL_EB
-            }
-          }
-        }  
-    }
     stage("ReadSubsetlFile"){
       steps{
         sh 'python3 --version'
@@ -57,6 +32,13 @@ pipeline{
           env.SUBSET_TEST_2 = configVal['configuration']['test'][1]
           env.SUBSET_REF_3 = configVal['configuration']['ref'][2]
           env.SUBSET_TEST_3 = configVal['configuration']['test'][2]
+          LABEL_TEST='test'
+          LABEL_REF='ref'
+          CONFIG_SUBSET = 'default_subset'
+          env.EMAIL_TO=env.EMAIL_TO_EB
+          env.BASE_REMOTE=env.BASE_REMOTE_EB
+          env.DATA_DIR=env.DATA_DIR_EB
+          env.BRANCH_VAL=env.BRANCH_VAL_EB
         }
         sh '''
         echo 'SUBSET_NAME = ' $SUBSET_NAME
