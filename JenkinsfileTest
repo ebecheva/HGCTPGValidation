@@ -6,6 +6,7 @@ pipeline{
     LABEL_TEST='test'
     LABEL_REF='ref'
     CONFIG_SUBSET = 'default_subset'
+    CHANGE_ID = 55
   }
   stages{
     stage("ReadSubsetlFile"){
@@ -60,10 +61,11 @@ pipeline{
         while [ $counter -le $NB_CONFIGS ]
         do
            counter=$(( $counter + 1 ))
-           echo $counter          
-           if [ -d "/data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID" ] 
+           echo $counter 
+           echo /data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter
+           if [ -d "/data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter" ] 
              then
-             rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
+             rm -rf /data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter
            fi
         done
         '''
