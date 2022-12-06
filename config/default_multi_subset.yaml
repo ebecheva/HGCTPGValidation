@@ -1,7 +1,7 @@
 ---
 subsetName: default subset
 description: basic test
-nbConfigs: '3'
+nbConfigs: 3
 configuration:
     - ref: default
       test: default
