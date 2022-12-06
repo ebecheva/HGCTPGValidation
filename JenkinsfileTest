@@ -46,8 +46,10 @@ pipeline{
         sh '''
         counter = 0
         while [ $counter -le $NB_CONFIGS ]
+        do
           ((counter++))
           echo $counter          
+        done
         '''
       }
     }
