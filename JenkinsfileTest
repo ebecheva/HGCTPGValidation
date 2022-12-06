@@ -2,8 +2,38 @@ pipeline{
   agent {
     label 'llrgrhgtrig.in2p3.fr'
   }
+  environment {
+    LABEL_TEST='test'
+    LABEL_REF='ref'
+    CONFIG_SUBSET = 'default_subset'
+  }
+  options {
+    skipDefaultCheckout() 
+  }
   stages{
-    stage("ReadYamlFile"){
+    stage('SetEnvVar'){
+      steps{
+        script{
+            String s = env.JOB_NAME
+            s = s.substring(s.indexOf("/") + 1)
+            s = s.substring(0, s.indexOf("/"));
+            println(s);
+            switch(s){
+            case 'HGC TPG Automatic Validation - TEST':
+                env.EMAIL_TO=env.EMAIL_TO_EB
+                env.BASE_REMOTE=env.BASE_REMOTE_TEST
+                env.DATA_DIR=env.DATA_DIR_TEST
+                env.BRANCH_VAL=env.BRANCH_VAL_TEST
+            case 'HGC TPG Automatic Validation - TEST ebecheva':
+                env.EMAIL_TO=env.EMAIL_TO_EB
+                env.BASE_REMOTE=env.BASE_REMOTE_EB
+                env.DATA_DIR=env.DATA_DIR_EB
+                env.BRANCH_VAL=env.BRANCH_VAL_EB
+            }
+          }
+        }  
+    }
+    stage("ReadSubsetlFile"){
       steps{
         sh 'python3 --version'
         sh 'pwd'
@@ -48,7 +78,11 @@ pipeline{
         while [ $counter -le $NB_CONFIGS ]
         do
            counter=$(( $counter + 1 ))
-          echo $counter          
+           echo $counter          
+           if [ -d "/data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID" ] 
+             then
+             rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
+           fi
         done
         '''
       }
