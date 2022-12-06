@@ -71,5 +71,19 @@ pipeline{
         '''
       }
     }
+    stage('BuildCMSSWTest'){
+      stages{
+          stage('Install'){
+              steps {
+                  echo 'InstallCMSSW Test step..'
+                   sh '''
+                   pwd    
+                   '''     
+              }
+          
+          }
+      }
+      
+    }
   }
 }
