@@ -13,24 +13,24 @@ pipeline{
           echo configVal['subsetName']
           echo configVal['description']
           echo configVal['nbConfigs']
+          def nbc = configVal['nbConfigs']
+          Integer nbrConfig = nbc as Integer
           echo configVal['configuration']['ref'][0]
           echo configVal['configuration']['test'][0]
           echo configVal['configuration']['ref'][1]
           echo configVal['configuration']['test'][1]
           env.SUBSET_NAME = configVal['subsetName']
-          env.NB_CONFIGS = configVal['nbConfigs']
+          env.NB_CONFIGS = nbrConfig
           env.SUBSET_REF_1 = configVal['configuration']['ref'][0]
           env.SUBSET_TEST_1 = configVal['configuration']['test'][0]
           env.SUBSET_REF_2 = configVal['configuration']['ref'][1]
           env.SUBSET_TEST_2 = configVal['configuration']['test'][1]
           env.SUBSET_REF_3 = configVal['configuration']['ref'][2]
           env.SUBSET_TEST_3 = configVal['configuration']['test'][2]
-          env.SUBSET1 = SUB_env.SUBSET_REF_1_env.SUBSET_TEST_1
         }
         sh '''
         echo 'SUBSET_NAME = ' $SUBSET_NAME
         echo 'NB_CONFIGS = ' $NB_CONFIGS
-        echo 'SUBSET1 = ' $SUBSET1 
         echo 'SUBSET_REF_1 = ' $SUBSET_REF_1
         echo 'SUBSET_TEST_1 = ' $SUBSET_TEST_1
         echo 'SUBSET_REF_2 = ' $SUBSET_REF_2
@@ -44,10 +44,10 @@ pipeline{
       steps{
         echo 'Clean the working environment.'
         sh '''
-        counter = 0
+        counter=0
         while [ $counter -le $NB_CONFIGS ]
         do
-          ((counter++))
+           counter=$(( $counter + 1 ))
           echo $counter          
         done
         '''
