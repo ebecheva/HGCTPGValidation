@@ -23,6 +23,8 @@ branch_ref=$5
 echo $branch_ref
 label=$6
 echo $label
+config=$7
+echo $config
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 module purge
