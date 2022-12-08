@@ -28,8 +28,8 @@ echo $config
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 module purge
-scramv1 p -n ${relversion}_HGCalTPGValidation_$config_$label CMSSW $relversion
-cd ${relversion}_HGCalTPGValidation_$config_$label/src
+scramv1 p -n ${relversion}_HGCalTPGValidation_${config}_${label} CMSSW $relversion
+cd ${relversion}_HGCalTPGValidation_${config}_${label}/src
 echo $PWD
 eval `scramv1 runtime -sh`
 git cms-merge-topic $remote:$branch
