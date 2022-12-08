@@ -110,6 +110,7 @@ def run_cmsDriver(configdata, release):
         --inputCommands {inputCommands} \
         --filein {filein} \
         --no_output \
+        --no_exec \
         --customise_commands {customise}"    
     else:
         command = f"echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
@@ -123,6 +124,7 @@ def run_cmsDriver(configdata, release):
         --procModifiers {procModifiers} \
         --filein {filein} \
         --no_output \
+        --no_exec \
         --customise_commands {customise}"
     
     pprint.pprint(command)
