@@ -35,4 +35,4 @@ eval `scramv1 runtime -sh`
 git cms-merge-topic $remote:$branch
 git checkout -b local_$branch $remote/$branch
 git cms-merge-topic ebecheva:$branch_ref
-scram b -j8
+#scram b -j8
