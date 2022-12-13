@@ -96,7 +96,7 @@ def run_cmsDriver(configdata, release):
     procModifiers=configdata['parameters']['procModifiers']
     filein=configdata['parameters']['filein']
     customiseUser=configdata['parameters']['customise_commands']
-    customise=f'{customiseUser} "process.onlineSaver.tag = cms.untracked.string(\'validation_HGCAL_TPG_{configName}_{release}\'); process.MessageLogger.files.out_{release} = dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"'
+    customise=f'{customiseUser} "process.onlineSaver.tag = cms.untracked.string(\'validation_HGCAL_TPG_{configName}_{release}\'); process.MessageLogger.files.out_{configName}_{release} = dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"'
 
     if procModifiers == 'empty':
         command = f"echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
