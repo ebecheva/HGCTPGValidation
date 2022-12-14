@@ -125,7 +125,6 @@ pipeline{
                 echo 'SUBSET_TEST_1= ' SUBSET_TEST_1
      
                 # Apply QualityChecks only for the first config as the code is the same for the others
-                echo $counter
                 subset=SUBSET_TEST_1
                 sub=${!subset}
                 echo "${REF_RELEASE}_HGCalTPGValidation_${sub}_${LABEL_TEST}/src"
@@ -137,7 +136,6 @@ pipeline{
                     echo "Code-checks or code-format failed."
                     exit 1;
                 fi
-                counter=$(( $counter + 1 ))
                 cd ../..
             '''
           }
