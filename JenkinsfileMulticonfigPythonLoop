@@ -1,0 +1,92 @@
+# JenkinsfileMulticonfigPythonLoop
+# This is a test Jenkinsfile,
+# It is used in a "Pipeline" job, not "Multipipeline", doesn't need a PR to trigger the job
+# The different configurations are read in the python scripts
+
+pipeline{
+  agent {
+    label 'llrgrhgtrig.in2p3.fr'
+  }
+  environment {
+    LABEL_TEST='test'
+    LABEL_REF='ref'
+    CONFIG_SUBSET = 'default_multi_subset'
+    CHANGE_ID = 55
+  }
+  stages{
+    stage('CleanEnv'){
+      steps{
+        echo 'Clean the working environment.'
+        sh '''
+           echo ' Subset = ' SUBSET_TEST_$counter
+           echo /data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter
+           if [ -d "/data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter" ] 
+           then
+             rm -rf /data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter
+           fi
+        '''
+      }
+    }
+    stage('BuildCMSSWTest'){
+      stages{
+        stage('Install'){
+          steps {
+              echo 'InstallCMSSW Test step..'
+              sh '''
+              pwd
+              export SCRAM_ARCH='slc7_amd64_gcc10'
+              export REF_RELEASE='CMSSW_12_1_0_pre3'
+              REMOTE='ebecheva'
+              export REMOTE
+              export LABEL_TEST='test'
+              export CHANGE_BRANCH='fix-dev-CMSSW_12_1_0_pre3'
+              export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
+              ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
+              '''     
+          }
+        }
+        stage('QualityChecks'){
+          steps{
+              sh '''
+              export SCRAM_ARCH='slc7_amd64_gcc10'
+              export REF_RELEASE='CMSSW_12_1_0_pre3'
+              export REMOTE='ebecheva'
+              export LABEL_TEST='test'
+              source /cvmfs/cms.cern.ch/cmsset_default.sh
+              echo 'SUBSET_TEST_1= ' SUBSET_TEST_1
+     
+              echo "${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src"
+              cd ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+              scram build code-checks
+              scram build code-format
+              GIT_STATUS=`git status --porcelain`
+              if [ ! -z "$GIT_STATUS" ]; then
+                echo "Code-checks or code-format failed."
+                exit 1;
+              fi
+              '''
+          }
+        }
+        stage('Produce'){
+          steps {
+              sh '''
+              pwd
+              export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
+              export REF_RELEASE='CMSSW_12_1_0_pre3'
+              export LABEL_TEST='test'
+              source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
+              cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+              module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
+              module purge
+              module load python/3.9.9
+              python --version
+              echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
+              echo 'LABEL_TEST = ' ${LABEL_TEST}
+              python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
+              '''     
+          }
+        }  
+     }
+    }
+  }
+}
