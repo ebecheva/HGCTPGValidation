@@ -121,28 +121,24 @@ pipeline{
                 export REMOTE
                 LABEL_TEST="test"
                 export LABEL_TEST
-                export CHANGE_BRANCH="fix-dev-CMSSW_12_1_0_pre3"
-                export CHANGE_TARGET="main-dev-CMSSW_12_1_0_pre3"
                 source /cvmfs/cms.cern.ch/cmsset_default.sh
-                counter=1
-                echo 'SUBSET_TEST_$counter= ' SUBSET_TEST_$counter
-                while [ $counter -le $NB_CONFIGS ]
-                do
-                    echo $counter
-                    subset=SUBSET_TEST_$counter
-                    sub=${!subset}
-                    echo "${REF_RELEASE}_HGCalTPGValidation_${sub}_${LABEL_TEST}/src"
-                    cd ${REF_RELEASE}_HGCalTPGValidation_${sub}_${LABEL_TEST}/src
-                    scram build code-checks
-                    scram build code-format
-                    GIT_STATUS=`git status --porcelain`
-                    if [ ! -z "$GIT_STATUS" ]; then
-                        echo "Code-checks or code-format failed."
-                        exit 1;
-                    fi
-                    counter=$(( $counter + 1 ))
-                    cd ../..
-                done
+                echo 'SUBSET_TEST_1= ' SUBSET_TEST_1
+     
+                # Apply QualityChecks only for the first config as the code is the same for the others
+                echo $counter
+                subset=SUBSET_TEST_1
+                sub=${!subset}
+                echo "${REF_RELEASE}_HGCalTPGValidation_${sub}_${LABEL_TEST}/src"
+                cd ${REF_RELEASE}_HGCalTPGValidation_${sub}_${LABEL_TEST}/src
+                scram build code-checks
+                scram build code-format
+                GIT_STATUS=`git status --porcelain`
+                if [ ! -z "$GIT_STATUS" ]; then
+                    echo "Code-checks or code-format failed."
+                    exit 1;
+                fi
+                counter=$(( $counter + 1 ))
+                cd ../..
             '''
           }
         }
