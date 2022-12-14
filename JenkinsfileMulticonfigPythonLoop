@@ -16,15 +16,13 @@ pipeline{
   stages{
     stage('CleanEnv'){
       steps{
-        echo 'Clean the working environment.'
-        sh '''
-           echo ' Subset = ' SUBSET_TEST_$counter
-           echo /data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter
-           if [ -d "/data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter" ] 
-           then
-             rm -rf /data/jenkins/workspace/${DATA_DIR}/"PR${CHANGE_ID}"config$counter
-           fi
-        '''
+          echo 'Clean the working environment.'
+          sh '''
+          if [ -d "/data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID" ] 
+          then
+              rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
+          fi
+          '''
       }
     }
     stage('BuildCMSSWTest'){
