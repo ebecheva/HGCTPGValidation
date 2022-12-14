@@ -1,3 +1,5 @@
+# This is a test Jenkinsfile,
+# It is used in a "Pipeline" job, not "Multipipeline", doesn't need a PR to trigger the job
 pipeline{
   agent {
     label 'llrgrhgtrig.in2p3.fr'
