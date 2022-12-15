@@ -72,11 +72,7 @@ pipeline{
               export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
               export REF_RELEASE='CMSSW_12_1_0_pre3'
               export LABEL_TEST='test'
-              source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
               cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
-              module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
-              module purge
-              module load python/3.9.9
               python --version
               echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
               echo 'LABEL_TEST = ' ${LABEL_TEST}
@@ -86,22 +82,56 @@ pipeline{
         }  
      }
     }
-    
+    stage('BuildCMSSWRef'){
+      stages{
+        stage('Install'){
+          steps {
+              echo 'InstallCMSSW Ref step..'
+              sh '''
+              pwd
+              export SCRAM_ARCH='slc7_amd64_gcc10'
+              export REF_RELEASE='CMSSW_12_1_0_pre3'
+              REMOTE='ebecheva'
+              export REMOTE
+              export LABEL_TEST='ref'
+              export CHANGE_BRANCH='fix-dev-CMSSW_12_1_0_pre3'
+              export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
+              ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
+              ''' 
+          }
+        }
+        stage('Produce'){
+          steps {
+              sh '''
+              pwd
+              export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
+              export REF_RELEASE='CMSSW_12_1_0_pre3'
+              export LABEL_TEST='ref'
+              cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+              python --version
+              echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
+              echo 'LABEL_TEST = ' ${LABEL_TEST}
+              python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
+              ''' 
+          }
+        }
+      }
+    }
     stage('Display') {
         steps {
-              sh '''
-              cd test_dir
-              source ../HGCTPGValidation/env_install.sh
-              echo $PWD
-              export REF_RELEASE='CMSSW_12_1_0_pre3'
-              export TEST_RELEASE='CMSSW_12_1_0_pre3'
-              export LABEL_REF='ref'
-              export LABEL_TEST='test'
-              echo 'LABEL_TEST = ' ${LABEL_TEST}
+            sh '''
+            cd test_dir
+            source ../HGCTPGValidation/env_install.sh
+            echo $PWD
+            export REF_RELEASE='CMSSW_12_1_0_pre3'
+            export TEST_RELEASE='CMSSW_12_1_0_pre3'
+            export LABEL_REF='ref'
+            export LABEL_TEST='test'
+            echo 'LABEL_TEST = ' ${LABEL_TEST}
                 
-              ../HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${TEST_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src              
-              '''            
-            }
-        }
-  }
+            ../HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${TEST_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src              
+            '''            
+        }   
+    }  
+  } 
 }
