@@ -86,5 +86,22 @@ pipeline{
         }  
      }
     }
+    
+    stage('Display') {
+        steps {
+              sh '''
+              cd test_dir
+              source ../HGCTPGValidation/env_install.sh
+              echo $PWD
+              export REF_RELEASE='CMSSW_12_1_0_pre3'
+              export TEST_RELEASE='CMSSW_12_1_0_pre3'
+              export LABEL_REF='ref'
+              export LABEL_TEST='test'
+              echo 'LABEL_TEST = ' ${LABEL_TEST}
+                
+              ../HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${TEST_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src              
+              '''            
+            }
+        }
   }
 }
