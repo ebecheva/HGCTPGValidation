@@ -101,7 +101,6 @@ pipeline{
     stage('Display') {
         steps {
             sh '''
-            cd test_dir
             source ../HGCTPGValidation/env_install.sh
             echo $PWD
             echo 'LABEL_TEST = ' ${LABEL_TEST}          
