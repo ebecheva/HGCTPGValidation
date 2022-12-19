@@ -67,7 +67,7 @@ pipeline{
               export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
               export REF_RELEASE='CMSSW_12_1_0_pre3'
               export LABEL_TEST='test'
-              cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+              cd ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
               python --version
               echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
               echo 'LABEL_TEST = ' ${LABEL_TEST}
@@ -102,7 +102,7 @@ pipeline{
               export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
               export REF_RELEASE='CMSSW_12_1_0_pre3'
               export LABEL_TEST='ref'
-              cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+              cd ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
               python --version
               echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
               echo 'LABEL_TEST = ' ${LABEL_TEST}
