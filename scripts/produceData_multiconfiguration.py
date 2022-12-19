@@ -148,7 +148,7 @@ def main(subsetconfig, release):
             # Do only for "test" or for "ref"
             if key==release:
               # Read the config file corresponding to key:value
-              config_data=read_config(value, key)
+              config_data=read_config(value)
               confName=config_data['shortName']
               # Generate and run the python configuration file with cmsDriver.py only if the file doesn't exist
               if os.path.exists(f"hgcal_tpg_validation_{confName}_{release}_USER.py"):
