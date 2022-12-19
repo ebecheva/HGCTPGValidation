@@ -34,7 +34,7 @@ pipeline{
               export LABEL_TEST='test'
               export CHANGE_BRANCH='fix-dev-CMSSW_12_1_0_pre3'
               export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
-              ./scripts/installCMSSW_multiconfig.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
+              ./scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
               '''     
           }
         }
