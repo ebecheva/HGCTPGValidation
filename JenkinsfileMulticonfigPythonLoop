@@ -3,14 +3,14 @@ pipeline{
     label 'llrgrhgtrig.in2p3.fr'
   }
   environment {
-    LABEL_TEST='test'
-    LABEL_REF='ref'
+    LABEL_TEST = 'test'
+    LABEL_REF = 'ref'
     CONFIG_SUBSET = 'default_multi_subset'
-    REMOTE='ebecheva'
-    export SCRAM_ARCH='slc7_amd64_gcc10'
-    export REF_RELEASE='CMSSW_12_1_0_pre3'
-    export CHANGE_BRANCH='fix-dev-CMSSW_12_1_0_pre3'
-    export CHANGE_TARGET='main-dev-CMSSW_12_1_0_pre3'
+    REMOTE = 'ebecheva'
+    SCRAM_ARCH = 'slc7_amd64_gcc10'
+    REF_RELEASE = 'CMSSW_12_1_0_pre3'
+    CHANGE_BRANCH = 'fix-dev-CMSSW_12_1_0_pre3'
+    CHANGE_TARGET = 'main-dev-CMSSW_12_1_0_pre3'
     CHANGE_ID = 55
   }
   stages{
