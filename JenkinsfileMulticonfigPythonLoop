@@ -101,7 +101,7 @@ pipeline{
     stage('Display') {
         steps {
             sh '''
-            source ../HGCTPGValidation/env_install.sh
+            source ./env_install.sh
             echo $PWD
             echo 'LABEL_TEST = ' ${LABEL_TEST}          
             ./scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${TEST_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src              
