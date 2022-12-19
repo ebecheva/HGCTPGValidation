@@ -89,6 +89,7 @@ def read_config(configuration):
 # Run cmsDriver
 def run_cmsDriver(configdata, release):
     pprint.pprint('Running cmsDriver')
+    configName=configdata['shortName']
     nbEvents=configdata['parameters']['nbOfEvents']
     conditions=configdata['parameters']['conditions']
     beamspot=configdata['parameters']['beamspot']
@@ -99,7 +100,7 @@ def run_cmsDriver(configdata, release):
     filein=configdata['parameters']['filein']
     customiseUser=configdata['parameters']['customise_commands']
     customise=f'{customiseUser} "process.onlineSaver.tag = cms.untracked.string(\'validation_HGCAL_TPG_{configName}_{release}\'); process.MessageLogger.files.out_{configName}_{release} = dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"'
-
+ 
     if procModifiers == 'empty':
         command = f"echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
         cmsDriver.py hgcal_tpg_validation_{configName}_{release} -n {str(nbEvents)} \
@@ -130,6 +131,7 @@ def run_cmsDriver(configdata, release):
     return command
     
 def main(subsetconfig, release):
+    print('subsetconfig=',subsetconfig)
     logfile = open('logfile', 'w')
     logfile.write('Subprocess starts\n')
     
