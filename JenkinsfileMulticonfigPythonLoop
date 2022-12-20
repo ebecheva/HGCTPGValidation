@@ -104,7 +104,7 @@ pipeline{
             source ./env_install.sh
             echo $PWD
             echo 'LABEL_TEST = ' ${LABEL_TEST}          
-            python ./scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${TEST_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src              
+            python ./scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src              
             '''            
         }   
     }  
