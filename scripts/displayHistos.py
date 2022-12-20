@@ -20,14 +20,15 @@ import ROOT
 ROOT.gROOT.SetBatch(True)
 argv.remove( '-b-' )
 
-sys.path.insert(0, '../hgctpgvalidation/display')
+topDirectory = os.getcwd()
+print('topDirectory =', topDirectory)
+sys.path.insert(0, './hgctpgvalidation/display')
 
 from ROOT import TCanvas
 from ROOT import TFile, gDirectory, TH1F
 from graphFunctionsMulticonfigs import createWebPageLite, initRootStyle
 
-topDirectory = os.getcwd()
-print('topDirectory =', topDirectory)
+
 
 # Define the schema of the configuration data
 def check_schema_config(config):
