@@ -85,7 +85,7 @@ pipeline{
           steps {
               sh '''
               pwd
-              cd ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+              cd ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
               module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
               module purge
               module load python/3.9.9
