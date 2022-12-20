@@ -24,6 +24,7 @@ from ROOT import TCanvas
 from ROOT import TFile, gDirectory, TH1F
 from graphFunctionsMulticonfigs import createWebPageLite, initRootStyle
 
+sys.path.insert(0, '../hgctpgvalidation/display')
 
 # Define the schema of the configuration data
 def check_schema_config(config):
