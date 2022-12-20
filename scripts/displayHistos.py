@@ -62,7 +62,7 @@ def read_subset(config):
     filename = config + '.yaml'
     print('filename = ', filename)
     
-    with open('./' + filename) as f:
+    with open('./config/' + filename) as f:
         try:
             subset = yaml.safe_load(f)
         except yaml.YAMLError as e:
