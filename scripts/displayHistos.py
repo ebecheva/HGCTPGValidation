@@ -236,11 +236,26 @@ def standAloneHGCALTPGhistosCompare(refconfigname, testconfigname, refdir, testd
 
     print("Fin.")
 
-def main(configset, refdir, testdir):
+def writeIntoFile(prnumber, prtitle):
+    with open('validation_webpages.txt', 'w') as f:
+        prnb  = "PR" + prnumber
+        title = prnb + " : " + prtitle + "\n"
+        title_config1 = prnb + "config1" + " : Config1"
+        f.write(title + title_config1) 
+
+def main(configset, refdir, testdir, datadir, prnumber, prtitle):
     print('configset=', configset)
     logfile = open('logfile', 'w')
     logfile.write('Subprocess starts\n')
     
+    #prdir = data_dir + "/" + prnumber
+    
+    #if os.path.exists(prdir):
+    #    print("The data directory for the PR ", prnumber, "already exists.")
+    #    os.system("rm -rf /data/jenkins/workspace/" + prdir)
+    #else:
+    #    print("The data directory for the PR ", prnumber, "doesn't exist.")
+        
     configSubsets = get_listOfConfigs(configset)
     # Loop over all pairs of configs (ref-test)
     for elem in configSubsets:
@@ -260,7 +275,17 @@ def main(configset, refdir, testdir):
         # The directory containing the images is labeled with the ref and test config names
         imgdir = "GIF_" + elem[0] + "_" + elem[1]
         standAloneHGCALTPGhistosCompare(elem[0], elem[1], refdir, testdir, imgdir)
-     
+        
+        # Create directories for data, 
+        # prnumber: directory for a particular PR
+        # prnumberconfig: one directory per config for a given PR
+        prnumberconfig = prnumber + "_" + elem[0] + "_" + elem[1]
+        datadir_gif = datadir + "/" + prnumber + "/" + prnumberconfig
+        
+        os.system("mkdir " + datadir + "/" + prnumber)              
+        os.system("mkdir " + datadir_gif)
+        os.system("cp -rf " + imgdir + "/." + datadir_gif)
+        writeIntoFile(prnumber, prtitle)
      
 if __name__=='__main__':
     import optparse
@@ -270,6 +295,9 @@ if __name__=='__main__':
     parser.add_option('--subsetconfig', dest='subsetconfig', help=' ', default='default')
     parser.add_option('--refdir', dest='refdir', help=' ', default='')
     parser.add_option('--testdir', dest='testdir', help=' ', default='')
+    parser.add_option('--datadir', dest='datadir', help=' ', default='')
+    parser.add_option('--prnumber', dest='prnumber', help=' ', default='')
+    parser.add_option('--prtitle', dest='prtitle', help=' ', default='', type="string")
     (opt, args) = parser.parse_args()
 
     main(opt.subsetconfig, opt.refdir, opt.testdir)

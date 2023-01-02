@@ -122,7 +122,7 @@ pipeline {
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                         echo 'LABEL_TEST = ' ${LABEL_TEST}
-                        python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
                         '''     
                     }
                 }
@@ -153,7 +153,7 @@ pipeline {
                         module load python/3.9.9
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                        python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.p --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
+                        python ../../../HGCTPGValidation/scripts/produceData_from_configuration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
                         '''            
                     }
                 }
@@ -166,7 +166,19 @@ pipeline {
                 source ../HGCTPGValidation/env_install.sh
                 echo $PWD
                 source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                ../HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
+                ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src ./GIFS
+                echo 'CHANGE_ID= ', $CHANGE_ID
+                echo '$CHANGE_TITLE= ', $CHANGE_TITLE
+                if [ -d /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID ] 
+                then
+                    echo "Directory " PR$CHANGE_ID " exists." 
+                    rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
+                fi
+                export data_dir=/data/jenkins/workspace/${DATA_DIR}/
+                mkdir $data_dir/PR$CHANGE_ID
+                mkdir $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
+                cp -rf GIFS/. $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
+                python ../HGCTPGValidation/scripts/writeToFile.py --dirname $data_dir/PR$CHANGE_ID --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
                 '''            
             }
         }
