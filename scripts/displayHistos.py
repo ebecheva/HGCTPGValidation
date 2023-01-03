@@ -300,4 +300,4 @@ if __name__=='__main__':
     parser.add_option('--prtitle', dest='prtitle', help=' ', default='', type="string")
     (opt, args) = parser.parse_args()
 
-    main(opt.subsetconfig, opt.refdir, opt.testdir)
+    main(opt.subsetconfig, opt.refdir, opt.testdir, opt.datadir, opt.prnumber, opt.prtitle)
