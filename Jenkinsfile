@@ -153,7 +153,7 @@ pipeline {
                         module load python/3.9.9
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                        python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.p --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
+                        python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
                         '''            
                     }
                 }
