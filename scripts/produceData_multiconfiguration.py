@@ -58,8 +58,7 @@ def read_subset(config):
     filename = config + '.yaml'
     print('filename = ', filename)
     
-    # for production case: with open('../../../HGCTPGValidation/config/' + filename) as f:
-    with open('../../config/' + filename) as f:
+    with open('../../../HGCTPGValidation/config/' + filename) as f:
         try:
             subset = yaml.safe_load(f)
             print("Read subset configuration file.")
@@ -73,8 +72,8 @@ def read_subset(config):
 def read_config(configuration):
     os.system('python --version')
     filename = configuration + '.yaml'
-    #for production case: with open('../../../HGCTPGValidation/config/' + filename) as f:
-    with open('../../config/' + filename) as f:
+    
+    with open('../../../HGCTPGValidation/config/' + filename) as f:
         try:
             config = yaml.safe_load(f)
             print("Read simulation configuration file.")
