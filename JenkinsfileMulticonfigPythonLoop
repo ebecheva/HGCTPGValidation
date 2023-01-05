@@ -64,7 +64,7 @@ pipeline{
               python --version
               echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
               echo 'LABEL_TEST = ' ${LABEL_TEST}
-              python ../../scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
+              python ../../scripts/produceData_multiconfiguration_JobYaml.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
               '''     
           }
         }  
@@ -92,7 +92,7 @@ pipeline{
               python --version
               echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
               echo 'LABEL_REF = ' ${LABEL_REF}
-              python ../../scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
+              python ../../scripts/produceData_multiconfiguration_JobYaml.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
               ''' 
           }
         }
