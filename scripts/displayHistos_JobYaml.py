@@ -219,26 +219,40 @@ def standAloneHGCALTPGhistosCompare(refconfigname, testconfigname, refdir, testd
 
     print("Fin.")
 
-def writeIntoFile(prnumber, prtitle):
-    with open('validation_webpages.txt', 'w') as f:
+def writeIntoFile(prnumber, config, prtitle, prdir):
+    fileName = prdir + "/validation_webpages.txt"
+    with open(fileName, 'a') as f:
         prnb  = "PR" + prnumber
-        title = prnb + " : " + prtitle + "\n"
-        title_config1 = prnb + "config1" + " : Config1"
-        f.write(title + title_config1) 
+        if config=='':
+            title = prnb + " : " + prtitle + "\n"
+        else:
+            title = prnb + "_" + config + " : " + prtitle + "\n"
+        f.write(title) 
 
 def main(configset, refdir, testdir, datadir, prnumber, prtitle):
     print('configset=', configset)
     logfile = open('logfile', 'w')
     logfile.write('Subprocess starts\n')
+    logfile.write(prnumber)
     
-    #prdir = data_dir + "/" + prnumber
+    prdir = data_dir + "/" + prnumber
     
-    #if os.path.exists(prdir):
-    #    print("The data directory for the PR ", prnumber, "already exists.")
-    #    os.system("rm -rf /data/jenkins/workspace/" + prdir)
-    #else:
-    #    print("The data directory for the PR ", prnumber, "doesn't exist.")
-        
+    # Create directory with compared histogrames
+    if os.path.exists(prdir):
+        print("The data directory for the PR ", prdir, "already exists.")
+        mess = "The data directory for the PR " + prdir + "already exists."
+        logfile.write(mess)
+        os.system("rm -rf " + prdir)
+    else:
+        print("The data directory for the PR ", prdir, "doesn't exist.")
+        mess = "The data directory for the PR " + prdir + "doesn't exist."
+        logfile.write(mess)
+    
+    os.system("mkdir " + prdir)
+    
+    # Write the first line of the validation_webpages.txt
+    writeIntoFile(prnumber,'', prtitle, prdir)        
+    
     configSubsets = get_listOfConfigs(configset)
     # Loop over all pairs of configs (ref-test)
     for elem in configSubsets:
@@ -256,19 +270,27 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
         
         # For each pair (release-config) compare histograms and create web pages
         # The directory containing the images is labeled with the ref and test config names
-        imgdir = "GIF_" + elem[0] + "_" + elem[1]
+        imgdir = "GIF_" + conf
         standAloneHGCALTPGhistosCompare(elem[0], elem[1], refdir, testdir, imgdir)
         
         # Create directories for data, 
         # prnumber: directory for a particular PR
         # prnumberconfig: one directory per config for a given PR
-        prnumberconfig = prnumber + "_" + elem[0] + "_" + elem[1]
-        datadir_gif = datadir + "/" + prnumber + "/" + prnumberconfig
+        prnumberconfig = "PR" + prnumber + "_" + conf
+        datadir_gif = datadir + "PR" + prnumber + "/" + prnumberconfig
+        print("datadir=", datadir)
+        print("prnumberconfig=", prnumberconfig)
+        print("datadir_gif=", datadir_gif)
         
-        os.system("mkdir " + datadir + "/" + prnumber)              
-        os.system("mkdir " + datadir_gif)
-        os.system("cp -rf " + imgdir + "/." + datadir_gif)
-        writeIntoFile(prnumber, prtitle)
+        if os.path.exists(datadir_gif):
+            print("The data directory ", datadir_gif, "already exists.")
+            mess1="The data directory " + datadir_gif + "already exists."
+            logfile.write(mess1)
+        else:
+            os.system("mkdir " + datadir_gif)
+            print("cp -rf " + imgdir + "/." + datadir_gif)
+            os.system("cp -rf " + imgdir + "/. " + datadir_gif)
+            writeIntoFile(prnumber, conf, prtitle, prdir)
      
 if __name__=='__main__':
     import optparse
