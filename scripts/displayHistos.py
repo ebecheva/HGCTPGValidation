@@ -22,7 +22,7 @@ argv.remove( '-b-' )
 
 topDirectory = os.getcwd()
 print('topDirectory =', topDirectory)
-sys.path.insert(0, './hgctpgvalidation/display')
+sys.path.insert(0, './HGCTPGValidation/hgctpgvalidation/display')
 
 from ROOT import TCanvas
 from ROOT import TFile, gDirectory, TH1F
