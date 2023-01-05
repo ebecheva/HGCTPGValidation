@@ -91,23 +91,6 @@ def get_listOfConfigs(confSubsets):
         subsets.append(configValues)
         
     return subsets   
-        
-# Read the configuration file 
-# The input is the configuration given from read_subset(config)
-def read_config(configuration):
-    os.system('python --version')
-    filename = configuration + '.yaml'
-    with open('.' + filename) as f:
-        try:
-            config = yaml.safe_load(f)
-            print("Read simulation configuration file.")
-            print(config)
-        except yaml.YAMLError as e:
-            print(e)
-    
-    #check_schema_config(config)
-    
-    return config
 
 def checkSubprocessStatus(subProc, logfile):
     if subProc.wait() != 0:
