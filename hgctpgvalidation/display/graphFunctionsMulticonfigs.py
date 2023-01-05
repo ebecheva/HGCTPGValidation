@@ -198,9 +198,7 @@ def createWebPageLite(ref_configname, test_configname, input_ref_file, input_tes
     h2 = getHisto(f_ref, path_2)
     h2.ls()
     
-    # CMP_CONFIG = '../HGCTPGValidation/data/HGCALTriggerPrimitivesHistos.txt'
-    # testing
-    CMP_CONFIG = './data/HGCALTriggerPrimitivesHistos.txt'
+    CMP_CONFIG = '../HGCTPGValidation/data/HGCALTriggerPrimitivesHistos.txt'
     CMP_TITLE = ' HGCAL Trigger Primitives Validation '
     CMP_RED_FILE = input_test_file
     CMP_BLUE_FILE = input_ref_file
@@ -209,11 +207,8 @@ def createWebPageLite(ref_configname, test_configname, input_ref_file, input_tes
     MEM_REP_REF = './MemoryReport_' + ref_configname + '_ref.log'
     MEM_REP_TEST = './MemoryReport_' + test_configname + '_test.log'
     
-    #shutil.copy2('../HGCTPGValidation/data/img/up.gif', webdir+ '/img')
-    #shutil.copy2('../HGCTPGValidation/data/img/point.gif', webdir+ '/img')
-    # tesing
-    shutil.copy2('./data/img/up.gif', webdir+ '/img')
-    shutil.copy2('./data/img/point.gif', webdir+ '/img')
+    shutil.copy2('../HGCTPGValidation/data/img/up.gif', webdir+ '/img')
+    shutil.copy2('../HGCTPGValidation/data/img/point.gif', webdir+ '/img')
     image_up = './img/up.gif'
     image_point = './img/point.gif'
     
