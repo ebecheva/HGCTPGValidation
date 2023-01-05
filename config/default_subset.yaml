@@ -2,5 +2,5 @@
 subsetName: default
 description: This is a default subset.
 configuration:
-    ref: default
-    test: default
+    - ref: default
+      test: default
