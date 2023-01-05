@@ -5,7 +5,7 @@ pipeline {
     environment {
         LABEL_TEST='test'
         LABEL_REF='ref'
-        CONFIG_SUBSET = 'default_subset'
+        CONFIG_SUBSET = 'default_multi_subset'
     }
     options {
         skipDefaultCheckout() 
