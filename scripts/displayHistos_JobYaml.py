@@ -235,7 +235,7 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
     logfile.write('Subprocess starts\n')
     logfile.write(prnumber)
     
-    prdir = data_dir + "/" + prnumber
+    prdir = datadir + "/" + prnumber
     
     # Create directory with compared histogrames
     if os.path.exists(prdir):
@@ -251,7 +251,7 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
     os.system("mkdir " + prdir)
     
     # Write the first line of the validation_webpages.txt
-    writeIntoFile(prnumber,'', prtitle, prdir)        
+    writeIntoFile(prnumber,'', '', prtitle, prdir)
     
     configSubsets = get_listOfConfigs(configset)
     # Loop over all pairs of configs (ref-test)
@@ -294,7 +294,7 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
             os.system("mkdir " + datadir_gif)
             print("cp -rf " + imgdir + "/." + datadir_gif)
             os.system("cp -rf " + imgdir + "/. " + datadir_gif)
-            writeIntoFile(prnumber, confTest, confRef, prdir)
+            writeIntoFile(prnumber, confTest, confRef, prtitle, prdir)
      
 if __name__=='__main__':
     import optparse
