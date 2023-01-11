@@ -226,7 +226,7 @@ def writeIntoFile(prnumber, configTest, configRef, prtitle, prdir):
         if config=='':
             title = prnb + " : " + prtitle + "\n"
         else:
-            title = "Test: " + configTest + " | " + "Ref: " + configRef "\n"
+            title = "Test: " + configTest + " | " + "Ref: " + configRef + "\n"
         f.write(title) 
 
 def main(configset, refdir, testdir, datadir, prnumber, prtitle):
