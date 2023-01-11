@@ -19,6 +19,11 @@ pipeline {
                     s = s.substring(0, s.indexOf("/"));
                     println(s);
                     switch(s){
+                       case 'HGC TPG Automatic Validation':
+                            env.EMAIL_TO=env.EMAIL_TO_MAIN
+                            env.BASE_REMOTE=env.BASE_REMOTE_MAIN
+                            env.DATA_DIR=env.DATA_DIR_MAIN
+                            env.BRANCH_VAL=env.BRANCH_VAL_MAIN
                         case 'HGC TPG Automatic Validation - TEST':
                             env.EMAIL_TO=env.EMAIL_TO_EB
                             env.BASE_REMOTE=env.BASE_REMOTE_TEST
@@ -29,6 +34,11 @@ pipeline {
                             env.BASE_REMOTE=env.BASE_REMOTE_EB
                             env.DATA_DIR=env.DATA_DIR_EB
                             env.BRANCH_VAL=env.BRANCH_VAL_EB
+                        case 'Job HGC TPG Automatic Validation - TEST jbsauvan':
+                            env.EMAIL_TO=env.EMAIL_TO_JB
+                            env.BASE_REMOTE=env.BASE_REMOTE_JB
+                            env.DATA_DIR=env.DATA_DIR_JB
+                            env.BRANCH_VAL=env.BRANCH_VAL_JB
                     }
                 }
             }  
