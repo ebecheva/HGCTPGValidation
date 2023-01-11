@@ -219,14 +219,14 @@ def standAloneHGCALTPGhistosCompare(refconfigname, testconfigname, refdir, testd
 
     print("Fin.")
 
-def writeIntoFile(prnumber, config, prtitle, prdir):
+def writeIntoFile(prnumber, configTest, configRef, prtitle, prdir):
     fileName = prdir + "/validation_webpages.txt"
     with open(fileName, 'a') as f:
         prnb  = "PR" + prnumber
         if config=='':
             title = prnb + " : " + prtitle + "\n"
         else:
-            title = prnb + "_" + config + " : " + prtitle + "\n"
+            title = "Test: " + configTest + " | " + "Ref: " + configRef "\n"
         f.write(title) 
 
 def main(configset, refdir, testdir, datadir, prnumber, prtitle):
@@ -256,22 +256,26 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
     configSubsets = get_listOfConfigs(configset)
     # Loop over all pairs of configs (ref-test)
     for elem in configSubsets:
-        print(elem[0] + " - " + elem[1])
+        print(elem[1] + " - " + elem[0])
+        conf = elem[1] + "_" + elem[0]
+        confRef = elem[0]
+        confTest = elem[1]
         # Extract Time information for all modules
         extract_time_info(elem[0], elem[1])
      
         # Extract Memory Check information and global Time information   
-        extractInfos("out_" + elem[0] + "_ref.log", refdir)
-        extractInfos("out_" + elem[1] + "_test.log", testdir)
+        extractInfos("out_" + confRef + "_ref.log", refdir)
+        extractInfos("out_" + confTest + "_test.log", testdir)
      
         # Create histograms Time/event/producer from TimingInfo_.txt 
-        readFileStatement(elem[0], "ref", refdir)
-        readFileStatement(elem[1], "test", testdir)
+        readFileStatement(confRef, "ref", refdir)
+        readFileStatement(confTest, "test", testdir)
         
         # For each pair (release-config) compare histograms and create web pages
         # The directory containing the images is labeled with the ref and test config names
+        # The name wille be GIF_confTest_confRef
         imgdir = "GIF_" + conf
-        standAloneHGCALTPGhistosCompare(elem[0], elem[1], refdir, testdir, imgdir)
+        standAloneHGCALTPGhistosCompare(confRef, confTest, refdir, testdir, imgdir)
         
         # Create directories for data, 
         # prnumber: directory for a particular PR
@@ -290,7 +294,7 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
             os.system("mkdir " + datadir_gif)
             print("cp -rf " + imgdir + "/." + datadir_gif)
             os.system("cp -rf " + imgdir + "/. " + datadir_gif)
-            writeIntoFile(prnumber, conf, prtitle, prdir)
+            writeIntoFile(prnumber, confTest, confRef, prdir)
      
 if __name__=='__main__':
     import optparse
