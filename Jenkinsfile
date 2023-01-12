@@ -24,22 +24,29 @@ pipeline {
                             env.BASE_REMOTE=env.BASE_REMOTE_MAIN
                             env.DATA_DIR=env.DATA_DIR_MAIN
                             env.BRANCH_VAL=env.BRANCH_VAL_MAIN
+                            break
                         case 'HGC TPG Automatic Validation - TEST':
                             env.EMAIL_TO=env.EMAIL_TO_EB
                             env.BASE_REMOTE=env.BASE_REMOTE_TEST
                             env.DATA_DIR=env.DATA_DIR_TEST
                             env.BRANCH_VAL=env.BRANCH_VAL_TEST
+                            break
                         case 'HGC TPG Automatic Validation - TEST ebecheva':
                             env.EMAIL_TO=env.EMAIL_TO_EB
                             env.BASE_REMOTE=env.BASE_REMOTE_EB
                             env.DATA_DIR=env.DATA_DIR_EB
                             env.BRANCH_VAL=env.BRANCH_VAL_EB
+                            break
                         case 'Job HGC TPG Automatic Validation - TEST jbsauvan':
                             env.EMAIL_TO=env.EMAIL_TO_JB
                             env.BASE_REMOTE=env.BASE_REMOTE_JB
                             env.DATA_DIR=env.DATA_DIR_JB
                             env.BRANCH_VAL=env.BRANCH_VAL_JB
+                            break
                     }
+                    println(env.BASE_REMOTE)
+                    println(env.DATA_DIR)
+                    println(env.BRANCH_VAL)
                 }
             }  
         }
