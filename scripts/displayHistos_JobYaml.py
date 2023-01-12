@@ -223,7 +223,7 @@ def writeIntoFile(prnumber, configTest, configRef, prtitle, prdir):
     fileName = prdir + "/validation_webpages.txt"
     with open(fileName, 'a') as f:
         prnb  = "PR" + prnumber
-        if config=='':
+        if configTest=='':
             title = prnb + " : " + prtitle + "\n"
         else:
             title = "Test: " + configTest + " | " + "Ref: " + configRef + "\n"
