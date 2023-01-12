@@ -235,7 +235,7 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
     logfile.write('Subprocess starts\n')
     logfile.write(prnumber)
     
-    prdir = datadir + "/" + "PR" + prnumber
+    prdir = "../../" + datadir + "/" + "PR" + prnumber
     
     # Create directory with compared histogrames
     if os.path.exists(prdir):
