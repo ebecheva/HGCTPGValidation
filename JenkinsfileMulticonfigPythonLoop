@@ -5,6 +5,7 @@ pipeline{
   environment {
     LABEL_TEST = 'test'
     LABEL_REF = 'ref'
+    DATA_DIR_EB = 'validation_data_test_emilia' 
     CONFIG_SUBSET = 'default_multi_subset'
     REMOTE = 'ebecheva'
     SCRAM_ARCH = 'slc7_amd64_gcc10'
@@ -18,9 +19,9 @@ pipeline{
       steps{
           echo 'Clean the working environment.'
           sh '''
-          if [ -d "/data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID" ] 
+          if [ -d "/data/jenkins/workspace/${DATA_DIR_EB}/PR$CHANGE_ID" ] 
           then
-              rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
+              rm -rf /data/jenkins/workspace/${DATA_DIR_EB}/PR$CHANGE_ID
           fi
           '''
       }
@@ -104,7 +105,7 @@ pipeline{
             source ./env_install.sh
             echo $PWD
             echo 'LABEL_TEST = ' ${LABEL_TEST}             
-            python ./scripts/displayHistos_JobYaml.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
+            python ./scripts/displayHistos_JobYaml.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src --datadir ${DATA_DIR_EB} --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
             '''            
         }   
     }  
