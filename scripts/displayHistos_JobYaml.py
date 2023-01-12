@@ -291,9 +291,9 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
             mess1="The data directory " + datadir_gif + "already exists."
             logfile.write(mess1)
         else:
-            os.system("mkdir " + datadir_gif)
-            print("cp -rf " + imgdir + " /." + datadir_gif)
-            os.system("cp -rf " + imgdir + " /. " + datadir_gif)
+            os.system("mkdir ../../" + datadir_gif)
+            print("cp -rf " + imgdir + " /. ../../" + datadir_gif)
+            os.system("cp -rf " + imgdir + " /. ../../" + datadir_gif)
             writeIntoFile(prnumber, confTest, confRef, prtitle, prdir)
      
 if __name__=='__main__':
