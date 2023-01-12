@@ -26,7 +26,7 @@ sys.path.insert(0, './hgctpgvalidation/display')
 
 from ROOT import TCanvas
 from ROOT import TFile, gDirectory, TH1F
-from graphFunctionsMulticonfigs import createWebPageLite, initRootStyle
+from graphFunctionsMulticonfigs_JobYaml import createWebPageLite, initRootStyle
 
 
 
