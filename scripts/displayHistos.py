@@ -27,69 +27,7 @@ sys.path.insert(0, '../HGCTPGValidation/hgctpgvalidation/display')
 from ROOT import TCanvas
 from ROOT import TFile, gDirectory, TH1F
 from graphFunctionsMulticonfigs import createWebPageLite, initRootStyle
-
-
-# Define the schema of the configuration data
-def check_schema_config(config):
-    config_schema = Schema({
-        "shortName": str,
-        "longName": str,
-        "description": str,
-        "parameters": {
-            "nbOfEvents": int,
-            "conditions": str,
-            "beamspot": str,
-            "geometry": str,
-            "era": str,
-            "inputCommands": str,
-            "procModifiers": str,
-            "filein": str,
-            "customise_commands": str
-        }
-    })
-
-    try:
-        config_schema.validate(config)
-        print("Configuration is valid.")
-    except SchemaError as se:
-        raise se
-
-# Read the file with configurations sets
-def read_subset(config):
-    print('config=',config)
-    
-    filename = config + '.yaml'
-    print('filename = ', filename)
-    
-    with open('../HGCTPGValidation/config/' + filename) as f:
-        try:
-            subset = yaml.safe_load(f)
-        except yaml.YAMLError as e:
-            print(e)
-    
-    return subset
-
-# Return a list with config pairs (ref, test)  
-def get_listOfConfigs(confSubsets):
-    # read the subset_config file
-    data = read_subset(confSubsets)
-    config = data["configuration"]
-
-    # List of configuration pairs (ref, test)
-    subsets = []
-    for conf in config:
-        print(conf)
-        configValues = []
-        # Read the configuration - key: value
-        #- ref: default 
-        #  test: bcstc
-        for release, confName in conf.items():
-            configValues.append(confName) 
-            print("key = ", release, "value = ", confName)
-        
-        subsets.append(configValues)
-        
-    return subsets   
+from configFunctions import get_listOfConfigs, check_schema_config, read_config 
 
 def checkSubprocessStatus(subProc, logfile):
     if subProc.wait() != 0:
@@ -271,7 +209,9 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
     # Write the first line of the validation_webpages.txt
     writeIntoFile(prnumber, '', '', prtitle, prdir)
     
-    configSubsets = get_listOfConfigs(configset)
+    # Path to the config file
+    path='../HGCTPGValidation/config/'
+    configSubsets = get_listOfConfigs(path, configset)
     # Loop over all pairs of configs (ref-test)
     for elem in configSubsets:
         print(elem[1] + " - " + elem[0])
