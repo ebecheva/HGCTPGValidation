@@ -29,7 +29,6 @@ from ROOT import TFile, gDirectory, TH1F
 from graphFunctionsMulticonfigs import createWebPageLite, initRootStyle
 
 
-
 # Define the schema of the configuration data
 def check_schema_config(config):
     config_schema = Schema({
@@ -197,10 +196,15 @@ def readFileStatement(configname, rel, dirname):
     hFile.Write()
 
 def standAloneHGCALTPGhistosCompare(refconfigname, testconfigname, refdir, testdir, imgdir):
+    print("Call standAloneHGCALTPGhistosCompare.")
     # graphical initialization
     initRootStyle()
     cnv = TCanvas("canvas")
     
+    if os.path.exists(imgdir):
+      print("The path " + imgdir + "exists. Will be deleted.")
+      os.system("rm -rf " + imgdir)
+      
     os.system("mkdir " + imgdir)
     os.system("mkdir " + imgdir + "/img")
     
@@ -220,35 +224,50 @@ def standAloneHGCALTPGhistosCompare(refconfigname, testconfigname, refdir, testd
     print("Fin.")
 
 def writeIntoFile(prnumber, configTest, configRef, prtitle, prdir):
+    print("Call writeIntoFile.")
+    
     fileName = prdir + "/validation_webpages.txt"
+    print(fileName)
     with open(fileName, 'a') as f:
         prnb  = "PR" + prnumber
         if configTest=='':
             title = prnb + " : " + prtitle + "\n"
         else:
-            title = "Test: " + configTest + " | " + "Ref: " + configRef + "\n"
+            title = prnb + "_" + configTest + "_" + configRef + " : Test: " + configTest + " | " + "Ref: " + configRef + "\n"
         f.write(title)
 
 def main(configset, refdir, testdir, datadir, prnumber, prtitle):
+    print(' == Main == ')
     print('configset=', configset)
+    print('refdir=', refdir)
+    print('testdir=', testdir)
+    print('datadir=', datadir)
+    print('prnumber=', prnumber)
+    print('prtitle=', prtitle)
     logfile = open('logfile', 'w')
     logfile.write('Subprocess starts\n')
     logfile.write(prnumber)
     
-    prdir = datadir + "PR" + prnumber
-    
     # Create directory with compared histogrames
+    prdir = "../../" + datadir + "/PR" + prnumber
+    print('prdir = ', prdir)
     if os.path.exists(prdir):
-        print("The data directory for the PR ", prdir, "already exists.")
-        mess = "The data directory for the PR " + prdir + "already exists."
+        # Remove directory before copying new histograms, this is used when running only Display script
+        # When running the job with Jenkins, this directory is removed at the beginning of the job
+        print("The data directory for the PR ", prdir, "already exists. It will be deleted.")
+        mess = "The data directory for the PR " + prdir + "already exists. It will be deleted."
         logfile.write(mess)
+        #os.system("ls -lrt " + prdir)
         os.system("rm -rf " + prdir)
     else:
-        print("The data directory for the PR ", prdir, "doesn't exist.")
-        mess = "The data directory for the PR " + prdir + "doesn't exist."
+        print("The data directory for the PR ", prdir, "doesn't exist. It will be created")
+        mess = "The data directory for the PR " + prdir + "doesn't exist. It will be created"
         logfile.write(mess)
     
+    print("Will do mkdir " + prdir)
     os.system("mkdir " + prdir)
+    os.system("ls -lrt " + prdir)
+
     # Write the first line of the validation_webpages.txt
     writeIntoFile(prnumber, '', '', prtitle, prdir)
     
@@ -261,7 +280,7 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
         confTest = elem[1]
         # Extract Time information for all modules
         extract_time_info(confRef, confTest)
-     
+        
         # Extract Memory Check information and global Time information   
         extractInfos("out_" + confRef + "_ref.log", refdir)
         extractInfos("out_" + confTest + "_test.log", testdir)
@@ -276,20 +295,23 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
         imgdir = "GIF_" + conf
         standAloneHGCALTPGhistosCompare(confRef, confTest, refdir, testdir, imgdir)
         
-        # Create directories for data, 
+        # Create data directories for each configuration, 
         # prnumber: directory for a particular PR
         # prnumberconfig: one directory per config for a given PR
         prnumberconfig = "PR" + prnumber + "_" + conf
-        datadir_gif = "../../" + datadir + "/PR" + prnumber + "/" + prnumberconfig
-        print("datadir=", datadir)
-        print("prnumberconfig=", prnumberconfig)
-        print("datadir_gif=", datadir_gif)
-        
+        datadir_gif = prdir + "/" + prnumberconfig
+        print("datadir = ", datadir)
+        print("prnumberconfig = ", prnumberconfig)
+        print("datadir_gif = ", datadir_gif)
+        currentDirectory = os.getcwd()
+        print('currentDirectory = ', currentDirectory)
+
         if os.path.exists(datadir_gif):
             print("The data directory ", datadir_gif, "already exists.")
             mess1="The data directory " + datadir_gif + "already exists."
             logfile.write(mess1)
         else:
+            print("Directory " + datadir_gif + " will be created.")
             os.system("mkdir " + datadir_gif)
             print("cp -rf " + imgdir + "/. " + datadir_gif)
             os.system("cp -rf " + imgdir + "/. " + datadir_gif)
