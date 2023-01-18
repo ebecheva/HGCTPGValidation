@@ -18,6 +18,8 @@ from ROOT import TCanvas, gStyle, gPad
 from math import log10
 
 import shutil
+from configFunctions import read_config, check_schema_config
+
 
 def getHisto(file, path):
     t_path = file.Get(path)
@@ -228,12 +230,23 @@ def createWebPageLite(ref_configname, test_configname, input_ref_file, input_tes
         
     # here you can add some text such as GlobalTag for release & reference.
     wp.write("<br>\n")
-    
+
+    filePath='../HGCTPGValidation/config/'
+    test_configData=read_config(filePath, test_configname)
+    test_description=test_configData['description']
+    ref_configData=read_config(filePath, ref_configname)
+    ref_description=ref_configData['description']
+
     if (f_ref == 0):
         wp.write("<p>In all plots below, there was no reference histograms to compare with")
         wp.write(", and the " + CMP_RED_FILE + " histograms are in red.") # new release red in OvalFile
     else:
-        wp.write("<p>In all plots below")
+        wp.write("<h3><p> Test: " + test_configname + "</h3>")
+        wp.write("<p>" + test_description )
+        wp.write("<h3><p> Ref: " + ref_configname + "</h3>" )
+        wp.write("<p>" + ref_description )
+        wp.write("<p>=====================")
+        wp.write("<p>In all plots below " + test_configname)
         wp.write(", the <b><font color='red'> " + CMP_RED_FILE + " </font></b> histograms are in red") # new release red in OvalFile
         wp.write(", and the <b><font color='blue'> " + CMP_BLUE_FILE + " </font></b> histograms are in blue.") # ref release blue in OvalFile
     wp.write(" Some more details") # 
