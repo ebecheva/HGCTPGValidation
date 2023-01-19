@@ -40,14 +40,26 @@ def checkSubprocessStatus(subProc, logfile):
        print('Subprocess completed successfully!')
        logfile.write('=> Subprocess completed successfully!\n')
 
-def extractInfos(namefile, dirname):
+# Extract Memory Check information and global Time information
+def	extractTimeMemoryInfos(namefile, dirname):
+    print("Extract Time&Memory information from ", namefile)
+        
     # Output file MemoryReport_ref.log or MemoryReport_test.log
     indicator = namefile.split("_")
     #outputfile = f"MemoryReport_{indicator[1]}_{indicator[2]}"
     outputfile = "MemoryReport_" + indicator[1] + "_" + indicator[2]
+    print("oututfile = ", outputfile)
     
     # Input file out_ref.log or out_test.log
     nfile = dirname + '/' + namefile
+    
+    if os.path.exists(nfile):
+    # Remove Memory.txt files
+        print("The file ", outputfile, "already exists. It will be deleted.")
+        os.system("rm " + outputfile)
+    else:
+        print("The file ", outputfile, "wille be created.")
+        
     # Number of lines to be read starting from the line " Time Summary:"
     number_of_lines = 18
     # Open the file to read
@@ -66,10 +78,10 @@ def extractInfos(namefile, dirname):
                     for current_line in lines_cache:
                         f1.write(current_line)
 
-def extract_time_info(refconfig, testconfig):
 # Extract Time information for all modules
 #find . -name "out_ref.log" | xargs grep "TimeModule>" > TimingInfo_ref.txt
 #find . -name "out_test.log" | xargs grep "TimeModule>" > TimingInfo_test.txt
+def extract_time_info(refconfig, testconfig):
     print('extract_time_info starts')
     logfile = open('logfile', 'a+')
     logfile.write('extract_time_info starts\n')
@@ -222,8 +234,8 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
         extract_time_info(confRef, confTest)
         
         # Extract Memory Check information and global Time information   
-        extractInfos("out_" + confRef + "_ref.log", refdir)
-        extractInfos("out_" + confTest + "_test.log", testdir)
+        extractTimeMemoryInfos("out_" + confRef + "_ref.log", refdir)
+        extractTimeMemoryInfos("out_" + confTest + "_test.log", testdir)
      
         # Create histograms Time/event/producer from TimingInfo_.txt 
         readFileStatement(confRef, "ref", refdir)
