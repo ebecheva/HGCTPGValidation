@@ -381,11 +381,11 @@ def createWebPageLite(ref_configname, test_configname, input_ref_file, input_tes
     wp.write( "<h2>" + "Memory Report" + "</h2>\n" )
     with open(MEM_REP_REF) as file:
         for line in file.readlines():
-            wp.write(line)
+            wp.write("<p>Data ref => " + line)
  
     with open(MEM_REP_TEST) as file:
         for line in file.readlines():
-            wp.write("<p>Datatest => " + line)
+            wp.write("<p>Data test => " + line)
 
     wp.write( "</tr></table>\n" )
     wp.close()
