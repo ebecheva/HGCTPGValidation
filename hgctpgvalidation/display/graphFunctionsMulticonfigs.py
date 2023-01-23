@@ -189,7 +189,7 @@ def createPicture2(histo1, histo2, scaled, err, filename, cnv, axisFormat):
     return
 
 def createWebPageLite(ref_configname, test_configname, input_ref_file, input_test_file, path_1, path_2, cnv, webdir): # simplified version of createWebPage()
-    print('Start creating web pages')
+    print('Start creating web pages, ', ref_configname, ' - ' , test_configname)
     print(input_test_file)
     print(input_ref_file)
     f_test = ROOT.TFile(input_test_file)
@@ -237,21 +237,22 @@ def createWebPageLite(ref_configname, test_configname, input_ref_file, input_tes
     ref_configData=read_config(filePath, ref_configname)
     ref_description=ref_configData['description']
 
+    # Comment not needed informations
     if (f_ref == 0):
         wp.write("<p>In all plots below, there was no reference histograms to compare with")
         wp.write(", and the " + CMP_RED_FILE + " histograms are in red.") # new release red in OvalFile
     else:
-        wp.write("<h3><p> Test: " + test_configname + "</h3>")
+        wp.write("<h3><p><font color='red'> Test: " + test_configname + "</h3>")
         wp.write("<p>" + test_description )
-        wp.write("<h3><p> Ref: " + ref_configname + "</h3>" )
+        wp.write("<h3><p><font color='blue'> Ref: " + ref_configname + "</h3>" )
         wp.write("<p>" + ref_description )
-        wp.write("<p>=====================")
-        wp.write("<p>In all plots below " + test_configname)
-        wp.write(", the <b><font color='red'> " + CMP_RED_FILE + " </font></b> histograms are in red") # new release red in OvalFile
-        wp.write(", and the <b><font color='blue'> " + CMP_BLUE_FILE + " </font></b> histograms are in blue.") # ref release blue in OvalFile
-    wp.write(" Some more details") # 
-    wp.write(", <a href=\"" + CMP_CONFIG + "\">specification</a> of histograms") # histos list .txt file
-    wp.write(", <a href=\"gifs/\">images</a> of histograms" + "." )
+        wp.write("<p><font color='black'>=====================")
+    #    wp.write("<p>In all plots below " + test_configname)
+    #    wp.write(", the <b><font color='red'> " + CMP_RED_FILE + " </font></b> histograms are in red") # new release red in OvalFile
+    #    wp.write(", and the <b><font color='blue'> " + CMP_BLUE_FILE + " </font></b> histograms are in blue.") # ref release blue in OvalFile
+    #wp.write(" Some more details") # 
+    #wp.write(", <a href=\"" + CMP_CONFIG + "\">specification</a> of histograms") # histos list .txt file
+    #wp.write(", <a href=\"gifs/\">images</a> of histograms" + "." )
     wp.write("</p>\n")
 
     # filling the title array & dict
@@ -327,10 +328,59 @@ def createWebPageLite(ref_configname, test_configname, input_ref_file, input_tes
         wp.write( "</td>" )
         if ( i % 5 == 4 ):
             wp.write( "</tr>" )
-      
+              
     wp.write( "</table>\n" )
     wp.write( "<br>" )
-        
+    
+    memInfoRef = []
+    memInfoTest = []
+    i=0
+    with open(MEM_REP_REF) as file:
+        for line in file.readlines():
+            memInfoRef.append(line)
+            ++i
+ 
+    with open(MEM_REP_TEST) as file:
+        for line in file.readlines():
+            memInfoTest.append(line)
+            ++i
+            
+    # Write Memory and Timing Summary into a table
+    wp.write( "<h2>" + " Memory and Timing Summary" + "</h2>\n" )
+    wp.write( "<style>" )
+    wp.write( "table, th, td {" )
+    wp.write( "border:1px solid black;" )
+    wp.write( "}" )
+    wp.write( "</style>" )
+    wp.write( "<table style=\"width:100%\">" )
+    wp.write( "  <tr>" )
+    wp.write( "    <th>  </th>" )
+    wp.write( "    <th><font color='blue'> Ref</th>" )
+    wp.write( "    <th><font color='red'> Test</th>" )
+    wp.write( "  </tr>" )
+    wp.write( "  <tr>" )
+    wp.write( "    <th>Peak Memory</th>" )
+    wp.write( "    <th> <font color='blue'>" + memInfoRef[0] + "</th>" )
+    wp.write( "    <th><font color='red'>" + memInfoTest[0] + "</th>" )
+    wp.write( "  </tr>" )
+    wp.write( "  <tr>" )
+    wp.write( "    <th>Time Avg event</th>" )
+    wp.write( "    <th><font color='blue'>" + memInfoRef[1] + "</th>" )
+    wp.write( "    <th><font color='red'>" + memInfoTest[1] + "</th>" )
+    wp.write( "  </tr>" )
+    wp.write( "  <tr>" )
+    wp.write( "    <th>Total loop</th>" )
+    wp.write( "    <th><font color='blue'>" + memInfoRef[2] + "</th>" )
+    wp.write( "    <th><font color='red'>" + memInfoTest[2] + "</th>" )
+    wp.write( "  </tr>" )
+    wp.write( "  <tr>" )
+    wp.write( "    <th>Total init</th>" )
+    wp.write( "    <th><font color='blue'>" + memInfoRef[3] + "</th>" )
+    wp.write( "    <th><font color='red'>" + memInfoTest[3] + "</th>" )
+    wp.write( "  </tr>" )
+    wp.write( "</table>\n" )
+    wp.write( "<br>" )
+    wp.write( "<br>" )
     wp.write( "<table border=\"0\" cellpadding=\"5\" width=\"100%\">" )
     for i in range(0, len(titlesList)):
         wp.write( "\n<tr valign=\"top\">" )
@@ -376,17 +426,8 @@ def createWebPageLite(ref_configname, test_configname, input_ref_file, input_tes
                 # For histo in log
                 #if (histo_1.GetMaximum() > 0 and histo_1.GetMinimum() >= 0):
                 #    wp.write( "</td><td><a href=\"" + gif_name_log_index + "\"><img border=\"0\" class=\"image\" width=\"440\" src=\"" + gif_name_log_index + "\"></a>" )
-                wp.write( "</td></tr><tr valign=\"top\">" )
+                wp.write( "</td></tr><tr valign=\"top\">\n" )
     
-    wp.write( "<h2>" + "Memory Report" + "</h2>\n" )
-    with open(MEM_REP_REF) as file:
-        for line in file.readlines():
-            wp.write("<p>Data ref => " + line)
- 
-    with open(MEM_REP_TEST) as file:
-        for line in file.readlines():
-            wp.write("<p>Data test => " + line)
-
     wp.write( "</tr></table>\n" )
     wp.close()
         

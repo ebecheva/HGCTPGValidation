@@ -60,23 +60,30 @@ def	extractTimeMemoryInfos(namefile, dirname):
     else:
         print("The file ", outputfile, "wille be created.")
         
-    # Number of lines to be read starting from the line " Time Summary:"
-    number_of_lines = 18
     # Open the file to read
     with open(nfile) as f:
-        # Open the file to fill with the extracted information
-        with open(outputfile, "a+") as f1:
+    # Open the file to fill with the extracted information
+        with open(outputfile, "w") as f1:
             for line in f:
                 # Read Memory report information
+                # Extract the value of the peak
                 if "MemoryReport>" in line:
-                    f1.writelines(line)
-                # Read Time summary information
+                    indicator = line.split(" ")
+                    print(f"{indicator[4]} {indicator[5]}")
+                    f1.writelines(f"{indicator[4]} {indicator[5]}")
+                    # Read Time summary information
                 if " Time Summary:" in line:
-                    f1.writelines(line)
+                    #f1.writelines(line)
                     # Read 18 lines starting from " Time Summary:"
-                    lines_cache = islice(f, number_of_lines)
+                    lines_cache = islice(f, 2, 5, None)
                     for current_line in lines_cache:
-                        f1.write(current_line)
+                        indicator = current_line.split(" ")
+                        if (indicator[2])=="Avg":
+                            print(indicator[6])
+                            f1.write(indicator[6])
+                        else:
+                            print(indicator[5])
+                            f1.write(indicator[5])
 
 # Extract Time information for all modules
 #find . -name "out_ref.log" | xargs grep "TimeModule>" > TimingInfo_ref.txt
