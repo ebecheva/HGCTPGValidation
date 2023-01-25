@@ -13,6 +13,7 @@ pipeline {
     stages {
         stage('SetEnvVar'){
             steps{
+                echo "CHANGE_TARGET => ${CHANGE_TARGET}"
                 script{
                     String s = env.JOB_NAME
                     s = s.substring(s.indexOf("/") + 1)
@@ -50,7 +51,7 @@ pipeline {
                     
                     VAR_REL = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh env.CHANGE_TARGET')
                     env.REF_RELEASE=VAR_REL
-                    VAR_SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE')
+                    VAR_SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh VAR_REL')
                     env.SCRAM_ARCH=VAR_SCRAM_ARCH
                     println(env.REF_RELEASE)
                     println(env.SCRAM_ARCH)
