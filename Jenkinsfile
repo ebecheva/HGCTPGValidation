@@ -48,7 +48,7 @@ pipeline {
                     println(env.BASE_REMOTE)
                     println(env.DATA_DIR)
                     println(env.BRANCH_VAL)
-                    printlv(env.CHANGE_TARGET)
+                    println(env.CHANGE_TARGET)
                     VAR_REL = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh env.CHANGE_TARGET')
                     env.REF_RELEASE=VAR_REL
                     VAR_SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh VAR_REL')
