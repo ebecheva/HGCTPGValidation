@@ -14,8 +14,10 @@ pipeline {
         stage('SetEnvVar'){
             steps{
                 echo "CHANGE_TARGET => ${CHANGE_TARGET}"
+                sh '''
                 source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                 source ./HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
+                '''
                 script{
                     String s = env.JOB_NAME
                     s = s.substring(s.indexOf("/") + 1)
