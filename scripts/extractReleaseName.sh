@@ -17,5 +17,5 @@ do
   fi
   done
 done
-echo "The name of the release is $REF_RELEASE"
+echo "$REF_RELEASE"
 unset IFS
