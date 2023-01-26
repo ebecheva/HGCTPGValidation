@@ -11,7 +11,7 @@ do
     rel=$j
     if [ "$rel" == "CMSSW" ]
     then
-    echo "===The name of the release is $s"
+    #echo "===The name of the release is $s"
     export REF_RELEASE=$s
     break
   fi
