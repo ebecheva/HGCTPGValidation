@@ -71,6 +71,7 @@ do
     export $SCRAM_ARCH
     echo "the most recent gcc version is (x100) = " $recent_gcc_version
     echo "the scram_arch to use is = " $SCRAM_ARCH
+    echo $SCRAM_ARCH
   fi
   ((i=i+1))
 done < "$input"
