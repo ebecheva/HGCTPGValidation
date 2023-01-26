@@ -73,5 +73,5 @@ do
     echo "the scram_arch to use is = " $SCRAM_ARCH
   fi
   ((i=i+1))
-echo $SCRAM_ARCH
 done < "$input"
+echo $SCRAM_ARCH
