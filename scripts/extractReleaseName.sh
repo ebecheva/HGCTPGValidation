@@ -17,5 +17,6 @@ do
   fi
   done
 done
-echo "$REF_RELEASE"
 unset IFS
+echo "$REF_RELEASE"
+
