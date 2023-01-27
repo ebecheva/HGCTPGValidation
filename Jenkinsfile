@@ -117,7 +117,7 @@ pipeline {
                             export REMOTE=$CHANGE_FORK
                         fi
                         echo 'REMOTE= ', $REMOTE
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
                         '''
                     }
                 }
@@ -165,7 +165,7 @@ pipeline {
                         cd test_dir
                         source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
                         '''
                     }
                 }           
