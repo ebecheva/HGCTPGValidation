@@ -128,6 +128,7 @@ pipeline {
                     steps{
                         sh '''
                         source /cvmfs/cms.cern.ch/cmsset_default.sh
+                        pwd
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         scram build code-checks
                         scram build code-format
