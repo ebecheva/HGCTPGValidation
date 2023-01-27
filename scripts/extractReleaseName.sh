@@ -18,5 +18,5 @@ do
   done
 done
 unset IFS
-echo "$REF_RELEASE"
+echo -n "$REF_RELEASE"
 
