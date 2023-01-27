@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
+
+# Important
+# When this script is used in Groovy script, it is imperative to not use other echo messages
+# except the last "echo -n "$REF_RELEASE"" message
+# The "-n" option is mandatory in order to out result without a newline 
 
 ########################################################
 IFS="-"
