@@ -8,7 +8,7 @@
 #CMSSW           CMSSW_12_2_0              /cvmfs/cms.cern.ch/slc7_amd64_gcc900/cms/cmssw/CMSSW_12_2_0
 
 # The program extracts the scram_arch for the more recent gcc version (if there more than one arches)
-
+# When using this script inside a Groovy script, do not add other "echo.." messages except the last one
 
 # Show available SCRAM-based projects for selected SCRAM_ARCH. 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
