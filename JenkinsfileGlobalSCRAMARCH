@@ -48,15 +48,7 @@ pipeline {
                     println(env.DATA_DIR)
                     println(env.BRANCH_VAL)
                     println(env.CHANGE_TARGET)
-                    VAR_REL = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}')
-                    env.REF_RELEASE=VAR_REL
-                    println(env.REF_RELEASE)
-                    VAR_SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch_EnvVar.sh ${REF_RELEASE}')
-                    env.SCRAM_ARCH=VAR_SCRAM_ARCH
-                    println(env.SCRAM_ARCH)
                 }
-                echo "REF_RELEASE= ${REF_RELEASE}"
-                echo "SCRAM_ARCH = ${SCRAM_ARCH}"
             }  
         }
         stage('Initialize'){
@@ -95,6 +87,20 @@ pipeline {
                         mkdir test_dir
                         ls -lrt ..
                         '''
+                    }
+                }
+                stage('SetCMSSWEnvVar'){
+                    steps{
+                        script{
+                            VAR_REL = sh(returnStdout: true, script: 'pwd source ./HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}')
+                            env.REF_RELEASE=VAR_REL
+                            println(env.REF_RELEASE)
+                            VAR_SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch_EnvVar.sh ${REF_RELEASE}')
+                            env.SCRAM_ARCH=VAR_SCRAM_ARCH
+                            println(env.SCRAM_ARCH)
+                        }
+                        echo "REF_RELEASE= ${REF_RELEASE}"
+                        echo "SCRAM_ARCH = ${SCRAM_ARCH}"
                     }
                 }
             }
