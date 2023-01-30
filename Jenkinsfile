@@ -13,7 +13,6 @@ pipeline {
     stages {
         stage('SetEnvVar'){
             steps{
-                echo "CHANGE_TARGET => ${CHANGE_TARGET}"
                 script{
                     String s = env.JOB_NAME
                     s = s.substring(s.indexOf("/") + 1)
@@ -49,15 +48,7 @@ pipeline {
                     println(env.DATA_DIR)
                     println(env.BRANCH_VAL)
                     println(env.CHANGE_TARGET)
-                    VAR_REL = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh main-dev-CMSSW_12_1_0_pre3')
-                    env.REF_RELEASE=VAR_REL
-                    println(env.REF_RELEASE)
-                    VAR_SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh ${REF_RELEASE}')
-                    env.SCRAM_ARCH=VAR_SCRAM_ARCH
-                    println(env.SCRAM_ARCH)
                 }
-                echo "REF_RELEASE= ${REF_RELEASE}"
-                echo "SCRAM_ARCH = ${SCRAM_ARCH}"
             }  
         }
         stage('Initialize'){
@@ -98,6 +89,20 @@ pipeline {
                         '''
                     }
                 }
+                stage('SetCMSSWEnvVar'){
+                    steps{
+                        script{
+                            VAR_REL = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}')
+                            env.REF_RELEASE=VAR_REL
+                            println(env.REF_RELEASE)
+                            VAR_SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch_EnvVar.sh ${REF_RELEASE}')
+                            env.SCRAM_ARCH=VAR_SCRAM_ARCH
+                            println(env.SCRAM_ARCH)
+                        }
+                        echo "REF_RELEASE= ${REF_RELEASE}"
+                        echo "SCRAM_ARCH = ${SCRAM_ARCH}"
+                    }
+                }
             }
         }
         stage('BuildCMSSWTest'){
@@ -108,8 +113,6 @@ pipeline {
                         sh '''
                         pwd
                         cd test_dir
-                        source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
                         if [ -z "$CHANGE_FORK" ]
                         then
                             export REMOTE=$BASE_REMOTE
@@ -117,7 +120,7 @@ pipeline {
                             export REMOTE=$CHANGE_FORK
                         fi
                         echo 'REMOTE= ', $REMOTE
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_TEST}
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $BASE_REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
                         '''
                     }
                 }
@@ -125,7 +128,6 @@ pipeline {
                     steps{
                         sh '''
                         source /cvmfs/cms.cern.ch/cmsset_default.sh
-                        source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         scram build code-checks
                         scram build code-format
@@ -141,7 +143,6 @@ pipeline {
                     steps {
                         sh '''
                         pwd
-                        source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
@@ -163,8 +164,6 @@ pipeline {
                         sh '''
                         pwd
                         cd test_dir
-                        source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
                         ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
                         '''
                     }
@@ -173,7 +172,6 @@ pipeline {
                     steps {
                         sh '''
                         pwd
-                        source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
@@ -192,7 +190,6 @@ pipeline {
                 cd test_dir
                 source ../HGCTPGValidation/env_install.sh
                 echo $PWD
-                source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                 python ../HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src --datadir ${DATA_DIR} --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
                 '''            
             }
