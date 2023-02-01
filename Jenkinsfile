@@ -3,21 +3,61 @@ pipeline {
         label 'llrgrhgtrig.in2p3.fr'
     }
     environment {
-        EMAIL_TO = 'becheva@llr.in2p3.fr'
+        LABEL_TEST='test'
+        LABEL_REF='ref'
     }
     options {
         skipDefaultCheckout() 
     }
     stages {
+        stage('SetEnvVar'){
+            steps{
+                script{
+                    String s = env.JOB_NAME
+                    s = s.substring(s.indexOf("/") + 1)
+                    s = s.substring(0, s.indexOf("/"));
+                    println(s);
+                    switch(s){
+                        case 'HGC TPG Automatic Validation':
+                            env.EMAIL_TO=env.EMAIL_TO_MAIN
+                            env.BASE_REMOTE=env.BASE_REMOTE_MAIN
+                            env.DATA_DIR=env.DATA_DIR_MAIN
+                            env.BRANCH_VAL=env.BRANCH_VAL_MAIN
+                            break
+                        case 'HGC TPG Automatic Validation - TEST':
+                            env.EMAIL_TO=env.EMAIL_TO_EB
+                            env.BASE_REMOTE=env.BASE_REMOTE_TEST
+                            env.DATA_DIR=env.DATA_DIR_TEST
+                            env.BRANCH_VAL=env.BRANCH_VAL_TEST
+                            break
+                        case 'HGC TPG Automatic Validation - TEST ebecheva':
+                            env.EMAIL_TO=env.EMAIL_TO_EB
+                            env.BASE_REMOTE=env.BASE_REMOTE_EB
+                            env.DATA_DIR=env.DATA_DIR_EB
+                            env.BRANCH_VAL=env.BRANCH_VAL_EB
+                            break
+                        case 'Job HGC TPG Automatic Validation - TEST jbsauvan':
+                            env.EMAIL_TO=env.EMAIL_TO_JB
+                            env.BASE_REMOTE=env.BASE_REMOTE_JB
+                            env.DATA_DIR=env.DATA_DIR_JB
+                            env.BRANCH_VAL=env.BRANCH_VAL_JB
+                            break
+                    }
+                    println(env.BASE_REMOTE)
+                    println(env.DATA_DIR)
+                    println(env.BRANCH_VAL)
+                }
+            }  
+        }
         stage('Initialize'){
             stages{
                 stage('CleanEnv'){
                     steps{
                         echo 'Clean the working environment.'
                         sh '''
-                        if [ -d "/data/jenkins/workspace/validation_data_test_emilia/PR$CHANGE_ID" ] 
+                        if [ -d "/data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID" ]
                         then
-                            rm -rf /data/jenkins/workspace/validation_data_test_emilia/PR$CHANGE_ID
+                            rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
                         fi
                         '''
                     }
@@ -34,12 +74,12 @@ pipeline {
                         then
                             rm -rf HGCTPGValidation
                         fi
-                        git clone -b master https://github.com/ebecheva/HGCTPGValidation HGCTPGValidation
+                        git clone -b ${BRANCH_VAL} https://github.com/${BASE_REMOTE}/HGCTPGValidation HGCTPGValidation
                         source HGCTPGValidation/env_install.sh
                         pip install attrs
                         if [ -d "./test_dir" ] 
                         then
-                            echo "Directory test_dir exists." 
+                            echo "Directory test_dir exists."
                             rm -rf test_dir
                         fi
                         mkdir test_dir
@@ -59,15 +99,14 @@ pipeline {
                         cd test_dir
                         source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-                        export LABEL="test"
                         if [ -z "$CHANGE_FORK" ]
                         then
-                            export REMOTE="hgc-tpg"
+                            export REMOTE=$BASE_REMOTE
                         else
                             export REMOTE=$CHANGE_FORK
                         fi
                         echo 'REMOTE= ', $REMOTE
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_BRANCH $CHANGE_TARGET $LABEL
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $BASE_REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
                         '''
                     }
                 }
@@ -76,8 +115,7 @@ pipeline {
                         sh '''
                         source /cvmfs/cms.cern.ch/cmsset_default.sh
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        export LABEL="test"
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
+                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         scram build code-checks
                         scram build code-format
                         GIT_STATUS=`git status --porcelain`
@@ -93,10 +131,9 @@ pipeline {
                         sh '''
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        export LABEL="test"
                         export PROC_MODIFIER=""
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
-                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL $PROC_MODIFIER
+                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+                        ../../../HGCTPGValidation/scripts/produceData.sh ${LABEL_TEST} $PROC_MODIFIER
                         '''            
                     }
                 }
@@ -112,9 +149,7 @@ pipeline {
                         cd test_dir
                         source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
-                        export LABEL="ref"
-                        export REMOTE="hgc-tpg"
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $CHANGE_TARGET $CHANGE_TARGET $LABEL
+                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
                         '''
                     }
                 }           
@@ -123,10 +158,9 @@ pipeline {
                         sh '''
                         pwd
                         source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                        export LABEL="ref"
                         export PROC_MODIFIER=""
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_$LABEL/src
-                        ../../../HGCTPGValidation/scripts/produceData.sh $LABEL $PROC_MODIFIER
+                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
+                        ../../../HGCTPGValidation/scripts/produceData.sh ${LABEL_REF} $PROC_MODIFIER
                         '''            
                     }
                 }
@@ -139,15 +173,15 @@ pipeline {
                 source ../HGCTPGValidation/env_install.sh
                 echo $PWD
                 source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
-                ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_ref/src ./${REF_RELEASE}_HGCalTPGValidation_test/src ./GIFS
+                ../HGCTPGValidation/scripts/displayHistos.sh ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src ./${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src ./GIFS
                 echo 'CHANGE_ID= ', $CHANGE_ID
                 echo '$CHANGE_TITLE= ', $CHANGE_TITLE
-                if [ -d /data/jenkins/workspace/validation_data_test_emilia/PR$CHANGE_ID ] 
+                if [ -d /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID ] 
                 then
                     echo "Directory " PR$CHANGE_ID " exists." 
-                    rm -rf /data/jenkins/workspace/validation_data_test/PR$CHANGE_ID
+                    rm -rf /data/jenkins/workspace/${DATA_DIR}/PR$CHANGE_ID
                 fi
-                export data_dir=/data/jenkins/workspace/validation_data_test_emilia
+                export data_dir=/data/jenkins/workspace/${DATA_DIR}
                 mkdir $data_dir/PR$CHANGE_ID
                 mkdir $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
                 cp -rf GIFS/. $data_dir/PR$CHANGE_ID/"PR$CHANGE_ID"config1
