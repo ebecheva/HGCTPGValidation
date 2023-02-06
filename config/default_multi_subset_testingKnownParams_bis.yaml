@@ -1,0 +1,10 @@
+---
+subsetName: default subset
+description: basic test
+configuration:
+    - ref: default_testingKnownParams_bis
+      test: default
+    - ref: default
+      test: bcstc
+    - ref: newProcessors
+      test: bcstc
