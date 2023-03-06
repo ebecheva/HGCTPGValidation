@@ -39,7 +39,7 @@ def check_schema_config(config, filename):
             "inputCommands": str,
             "procModifiers": str,
             "filein": str,
-            "customise": str
+            "customise": str,
             "customise_commands": str
         }
     })
