@@ -47,7 +47,7 @@ def run_cmsDriver(configdata, release):
     --filein {filein} \
     --no_output \
     {customise} \
-    --customise_commands {customise}"
+    --customise_commands {customiseCommand}"
     
     pprint.pprint(command)
     return command
