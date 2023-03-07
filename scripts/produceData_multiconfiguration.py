@@ -67,8 +67,8 @@ def main(subsetconfig, release):
         #- ref: default 
         #  test: bcstc
         for key, value in conf.items():
-        print("key = ", key)
-        print("value = ", value)
+            print("key = ", key)
+            print("value = ", value)
             # Do only for "test" or for "ref"
             if key==release:
               # Read the config file corresponding to key:value
