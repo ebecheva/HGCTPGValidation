@@ -2,7 +2,6 @@
 # displayHistos.py --subsetconfig subsetconfig_name --refdir refdir --testdir testdir 
 # release is ref or test
 
-#from schema import Schema, SchemaError
 import yaml
 import pprint
 import os
@@ -10,7 +9,6 @@ import sys
 import subprocess
 from itertools import islice
 
-#python2
 import urllib
 import re
 
@@ -46,7 +44,6 @@ def	extractTimeMemoryInfos(namefile, dirname):
         
     # Output file MemoryReport_ref.log or MemoryReport_test.log
     indicator = namefile.split("_")
-    #outputfile = f"MemoryReport_{indicator[1]}_{indicator[2]}"
     outputfile = "MemoryReport_" + indicator[1] + "_" + indicator[2]
     print("oututfile = ", outputfile)
     
@@ -73,7 +70,6 @@ def	extractTimeMemoryInfos(namefile, dirname):
                     f1.writelines(f"{indicator[4]} {indicator[5]}")
                     # Read Time summary information
                 if " Time Summary:" in line:
-                    #f1.writelines(line)
                     # Read 18 lines starting from " Time Summary:"
                     lines_cache = islice(f, 2, 5, None)
                     for current_line in lines_cache:
@@ -214,7 +210,6 @@ def main(configset, refdir, testdir, datadir, prnumber, prtitle):
         print("The data directory for the PR ", prdir, "already exists. It will be deleted.")
         mess = "The data directory for the PR " + prdir + "already exists. It will be deleted."
         logfile.write(mess)
-        #os.system("ls -lrt " + prdir)
         os.system("rm -rf " + prdir)
     else:
         print("The data directory for the PR ", prdir, "doesn't exist. It will be created")
