@@ -55,7 +55,7 @@ def run_cmsDriver(configdata, release):
 def main(subsetconfig, release):
     logfile = open('logfile', 'w')
     logfile.write('Starts producing data from configurations.\n')
-    
+    print('Starts producing data from configurations.\n')
     # Path to the config files
     path='../../../HGCTPGValidation/config/'
 
@@ -66,6 +66,8 @@ def main(subsetconfig, release):
         # Read the configuration - key: value
         #- ref: default 
         #  test: bcstc
+        print("key = ", key)
+        print("value = ", value)
         for key, value in conf.items():
             # Do only for "test" or for "ref"
             if key==release:
