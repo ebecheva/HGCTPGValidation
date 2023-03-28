@@ -4,5 +4,3 @@ description: Default set of comparisons
 configuration:
     - ref: default
       test: default
-    - ref: bcstc
-      test: bcstc
