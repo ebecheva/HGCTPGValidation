@@ -78,6 +78,8 @@ def main(subsetconfig, release):
               if os.path.exists(f"hgcal_tpg_validation_{confName}_{release}_USER.py"):
                 print("Python file for the config ", value, ":", key, "was already created.")  
               else:
+                cwd = os.getcwd()
+                print("Current working directory:".format(cwd))
                 command = run_cmsDriver(config_data, release)
                 sourceCmd = ['bash', '-c', command]
                 sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
