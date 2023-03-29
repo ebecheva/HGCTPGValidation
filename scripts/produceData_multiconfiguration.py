@@ -34,7 +34,7 @@ def run_cmsDriver(configdata, release):
     # if customiseUser==empty we get an empty string, the --customise option won't be used
     # else --customise {customiseUser}
     customise = f'{"" if customiseUser=="empty" else f"--customise {customiseUser}"}'
-    
+    print("2 Current dir=", os.getcwd())
     command = f"echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
     cmsDriver.py hgcal_tpg_validation_{configName}_{release} -n {str(nbEvents)} \
     --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
@@ -79,7 +79,7 @@ def main(subsetconfig, release):
                 print("Python file for the config ", value, ":", key, "was already created.")  
               else:
                 cwd = os.getcwd()
-                print("Current working directory:".format(cwd))
+                print("Current working directory:", cwd)
                 command = run_cmsDriver(config_data, release)
                 sourceCmd = ['bash', '-c', command]
                 sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
