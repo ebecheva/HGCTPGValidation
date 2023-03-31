@@ -9,7 +9,7 @@ import os
 import sys
 import subprocess
 
-sys.path.insert(0, '../../../HGCTPGValidation/scripts')
+sys.path.insert(0, topdir + '/HGCTPGValidation/scripts')
 from configFunctions import check_schema_subset, check_schema_config, read_subset, read_config, get_listOfConfigs
 
 # Run cmsDriver
@@ -53,13 +53,13 @@ def run_cmsDriver(configdata, release):
     pprint.pprint(command)
     return command
     
-def main(subsetconfig, release):
+def main(subsetconfig, release, topdir):
     logfile = open('logfile', 'w')
     logfile.write('Starts producing data from configurations.\n')
     print('Starts producing data from configurations.\n')
     
     # Path to the config files
-    path='../../../HGCTPGValidation/config/'
+    path = topdir + '/HGCTPGValidation/config/'
 
     # read the subset_config file
     data = read_subset(path, subsetconfig)
@@ -96,6 +96,7 @@ if __name__ == "__main__":
     parser = optparse.OptionParser(usage)
     parser.add_option('--subsetconfig', dest='subsetconfig', help=' ', default='default_subset')
     parser.add_option('--label', dest='release', help=' ', default='test')
+    parser.add_option('--workspace', dest='topdir', help=' ', default='')
     (opt, args) = parser.parse_args()
    
     main(opt.subsetconfig, opt.release)

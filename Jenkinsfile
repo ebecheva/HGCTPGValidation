@@ -72,19 +72,19 @@ pipeline {
                         whoami
                         pwd
                         ls -l
-                        if [ -d "./HGCTPGValidation" ] 
+                        if [ -d "${WORKSPACE}/HGCTPGValidation" ] 
                         then
-                            rm -rf HGCTPGValidation
+                            rm -rf ${WORKSPACE}/HGCTPGValidation
                         fi
                         git clone -b ${BRANCH_VAL} https://github.com/${BASE_REMOTE}/HGCTPGValidation HGCTPGValidation
-                        source HGCTPGValidation/env_install.sh
+                        source ${WORKSPACE}/HGCTPGValidation/env_install.sh
                         pip install attrs
-                        if [ -d "./test_dir" ] 
+                        if [ -d "${WORKSPACE}/test_dir" ] 
                         then
                             echo "Directory test_dir exists."
-                            rm -rf test_dir
+                            rm -rf ${WORKSPACE}/test_dir
                         fi
-                        mkdir test_dir
+                        mkdir ${WORKSPACE}/test_dir
                         ls -lrt ..
                         '''
                     }
@@ -92,8 +92,8 @@ pipeline {
                 stage('SetCMSSWEnvVar'){
                     steps{
                         script{
-                            env.REF_RELEASE = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}')
-                            env.SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh ${REF_RELEASE}')
+                            env.REF_RELEASE = sh(returnStdout: true, script: 'source ${WORKSPACE}/HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}')
+                            env.SCRAM_ARCH = sh(returnStdout: true, script: 'source ${WORKSPACE}/HGCTPGValidation/scripts/getScramArch.sh ${REF_RELEASE}')
                         }
                         echo "REF_RELEASE= ${REF_RELEASE}"
                         echo "SCRAM_ARCH = ${SCRAM_ARCH}"
@@ -116,7 +116,7 @@ pipeline {
                             export REMOTE=$CHANGE_FORK
                         fi
                         echo 'REMOTE= ', $REMOTE
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $BASE_REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
+                        ${WORKSPACE}/HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $BASE_REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
                         '''
                     }
                 }
@@ -124,7 +124,7 @@ pipeline {
                     steps{
                         sh '''
                         source /cvmfs/cms.cern.ch/cmsset_default.sh
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+                        cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         scram build code-checks
                         scram build code-format
                         GIT_STATUS=`git status --porcelain`
@@ -139,14 +139,14 @@ pipeline {
                     steps {
                         sh '''
                         pwd
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+                        cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
                         module load python/3.9.9
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                         echo 'LABEL_TEST = ' ${LABEL_TEST}
-                        python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
+                        python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --workspace ${WORKSPACE}
                         '''     
                     }
                 }
@@ -160,7 +160,7 @@ pipeline {
                         sh '''
                         pwd
                         cd test_dir
-                        ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
+                        ${WORKSPACE}/HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $BASE_REMOTE $BASE_REMOTE $CHANGE_TARGET $CHANGE_TARGET ${LABEL_REF}
                         '''
                     }
                 }           
@@ -168,13 +168,13 @@ pipeline {
                     steps {
                         sh '''
                         pwd
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
+                        cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
                         module load python/3.9.9
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                        python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF}
+                        python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF} --workspace ${WORKSPACE}
                         '''            
                     }
                 }
@@ -184,9 +184,9 @@ pipeline {
             steps {
                 sh '''
                 cd test_dir
-                source ../HGCTPGValidation/env_install.sh
+                source ${WORKSPACE}/HGCTPGValidation/env_install.sh
                 echo $PWD
-                python ../HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src --datadir ${DATA_DIR} --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
+                python ${WORKSPACE}/HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src --datadir ${DATA_DIR} --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
                 '''            
             }
         }
