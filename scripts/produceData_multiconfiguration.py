@@ -99,4 +99,4 @@ if __name__ == "__main__":
     parser.add_option('--workspace', dest='topdir', help=' ', default='')
     (opt, args) = parser.parse_args()
    
-    main(opt.subsetconfig, opt.release)
+    main(opt.subsetconfig, opt.release, opt.topdir)
