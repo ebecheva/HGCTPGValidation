@@ -85,7 +85,7 @@ def main(subsetconfig, release, topdir):
                 print("Current working directory:", cwd)
                 command = run_cmsDriver(config_data, release)
                 sourceCmd = ['bash', '-c', command]
-                sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
+                sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile,  shell=True)
                 (out, err) = sourceProc.communicate() # wait for subprocess to finish
             else:
               print("Do not run this configuration: ", key, ": ", value)
