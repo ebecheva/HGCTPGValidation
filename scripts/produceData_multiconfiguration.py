@@ -14,6 +14,7 @@ from configFunctions import check_schema_subset, check_schema_config, read_subse
 
 # Run cmsDriver
 def run_cmsDriver(configdata, release):
+    print("Run cmsDriver")
     configName=configdata['shortName']
     nbEvents=configdata['parameters']['nbOfEvents']
     conditions=configdata['parameters']['conditions']
@@ -55,6 +56,7 @@ def run_cmsDriver(configdata, release):
 def main(subsetconfig, release):
     logfile = open('logfile', 'w')
     logfile.write('Starts producing data from configurations.\n')
+    print('Starts producing data from configurations.\n')
     
     # Path to the config files
     path='../../../HGCTPGValidation/config/'
