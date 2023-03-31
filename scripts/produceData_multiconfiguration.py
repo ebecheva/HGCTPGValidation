@@ -9,7 +9,7 @@ import os
 import sys
 import subprocess
 
-sys.path.insert(0, topdir + '/HGCTPGValidation/scripts')
+sys.path.insert(0, '../../../HGCTPGValidation/scripts')
 from configFunctions import check_schema_subset, check_schema_config, read_subset, read_config, get_listOfConfigs
 
 # Run cmsDriver
