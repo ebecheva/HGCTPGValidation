@@ -146,7 +146,6 @@ pipeline {
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                         echo 'LABEL_TEST = ' ${LABEL_TEST}
-                        source /cvmfs/cms.cern.ch/cmsset_default.sh
                         python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --workspace ${WORKSPACE}
                         '''     
                     }
@@ -175,7 +174,6 @@ pipeline {
                         module load python/3.9.9
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                        source /cvmfs/cms.cern.ch/cmsset_default.sh
                         python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_REF} --workspace ${WORKSPACE}
                         '''            
                     }
