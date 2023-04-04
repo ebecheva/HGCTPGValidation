@@ -37,7 +37,7 @@ def run_cmsDriver(configdata, release):
     customise = f'{"" if customiseUser=="empty" else f"--customise {customiseUser}"}'
     print("2 Current dir=", os.getcwd())
     command = f"echo $PWD; \
-    source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; echo $PWD; \
+    source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; echo $PATH; \
     cmsDriver.py hgcal_tpg_validation_{configName}_{release} -n {str(nbEvents)} \
     --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
     --conditions {conditions} \
