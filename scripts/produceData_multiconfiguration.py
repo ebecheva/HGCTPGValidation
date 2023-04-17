@@ -60,10 +60,10 @@ def main(subsetconfig, release, topdir):
     print('Starts producing data from configurations.\n')
     
     # Path to the config files
-    path = topdir + '/HGCTPGValidation/config/'
+    config_path = topdir + '/HGCTPGValidation/config/'
 
     # read the subset_config file
-    data = read_subset(path, subsetconfig)
+    data = read_subset(config_path, subsetconfig)
     config = data["configuration"]
     for conf in config:
         # Read the configuration - key: value
@@ -72,9 +72,9 @@ def main(subsetconfig, release, topdir):
         for key, value in conf.items():
             # Do only for "test" or for "ref"
             if key==release:
-              print("path=", path)
+              print("config_path=", config_path)
               # Read the config file corresponding to key:value
-              config_data=read_config(path, value)
+              config_data=read_config(config_path, value)
               confName=config_data['shortName']
               print("config_data= ", config_data)
               # Generate and run the python configuration file with cmsDriver.py only if the file doesn't exist
