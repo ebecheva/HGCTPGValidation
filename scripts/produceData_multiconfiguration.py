@@ -62,7 +62,7 @@ def main(subsetconfig, label, topdir, release):
     
     # Path to the config files
     config_path = f"{topdir}/HGCTPGValidation/config/"
-    release_path = f"topdir/test_dir/{release}_HGCalTPGValidation_{label}/src/"
+    release_path = f"{topdir}/test_dir/{release}_HGCalTPGValidation_{label}/src/"
     
     # read the subset_config file
     data = read_subset(config_path, subsetconfig)
