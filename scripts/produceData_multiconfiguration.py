@@ -39,18 +39,19 @@ def run_cmsDriver(configdata, label, release_path):
     command = f"echo $PWD; \
     cd {release_path}; \
     source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; echo $PATH; \
-    cmsDriver.py hgcal_tpg_validation_{configName}_{label} -n {str(nbEvents)} \
-    --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
-    --conditions {conditions} \
-    --beamspot {beamspot} \
-    --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation \
-    --geometry {geometry} --era {era} \
-    --inputCommands {inputCommands} \
-    {procMod} \
-    --filein {filein} \
-    --no_output \
-    {customise} \
-    --customise_commands {customiseCommand}"
+    cmsDriver.py hgcal_tpg_validation_default_test -n 50 --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW --conditions auto:phase2_realistic_T15 --beamspot HLLHC14TeV --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation --geometry Extended2026D49 --era Phase2C9 --inputCommands keep *,drop l1tTkPrimaryVertexs_L1TkPrimaryVertex__RECO --filein file:/data_CMS_upgrade/data_jenkins/Phase2HLTTDRSummer20ReRECOMiniAOD/TT_TuneCP5_14TeV-powheg-pythia8/FEVT/PU200_111X_mcRun4_realistic_T15_v1-v2/003ACFBC-23B2-EA45-9A12-BECFF07760FC.root --no_output --customise_commands process.onlineSaver.tag = cms.untracked.string('validation_HGCAL_TPG_default_test'); process.MessageLogger.files.out_default_test = dict(); process.Timing = cms.Service('Timing', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service('SimpleMemoryCheck', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"
+  #  cmsDriver.py hgcal_tpg_validation_{configName}_{label} -n {str(nbEvents)} \
+  #  --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
+  #  --conditions {conditions} \
+  #  --beamspot {beamspot} \
+  #  --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation \
+  #  --geometry {geometry} --era {era} \
+  #  --inputCommands {inputCommands} \
+  #  {procMod} \
+  #  --filein {filein} \
+  #  --no_output \
+  #  {customise} \
+  #  --customise_commands {customiseCommand}"
     
     pprint.pprint(command)
     return command
