@@ -36,7 +36,7 @@ def run_cmsDriver(configdata, label, release_path):
     
     # if customiseUser==empty we get an empty string, the --customise option won't be used
     # else --customise {customiseUser}
-    customise = f"{"" if customiseUser=="empty" else f"--customise {customiseUser}"}"
+    customise = f"{"" if customiseUser=='empty' else f"--customise {customiseUser}"}"
     print("2 Current dir=", os.getcwd())
     
     command = f"echo $PWD; \
