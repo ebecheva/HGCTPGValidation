@@ -15,4 +15,4 @@ echo "Release = " $4
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 echo $PWD
 eval `scramv1 runtime -sh`
-python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --workspace ${WORKSPACE} --release ${REF_RELEASE}
+python $3/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig $1 --label $2 --workspace $3 --release $4
