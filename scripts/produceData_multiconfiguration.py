@@ -41,7 +41,7 @@ def run_cmsDriver(configdata, label, release_path):
     
     command = ("echo $PWD; " + "cd " + release_path + "; source /cvmfs/cms.cern.ch/cmsset_default.sh; " +
     "eval `scramv1 runtime -sh`; echo $PATH; "
-    "cmsDriver.py hgcal_tpg_validation_" + configName + "_" + label + "-n " + str(nbEvents) +
+    "cmsDriver.py hgcal_tpg_validation_" + configName + "_" + label + " -n " + str(nbEvents) +
     " --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW " +
     "--conditions " + conditions +
     " --beamspot " + beamspot +
