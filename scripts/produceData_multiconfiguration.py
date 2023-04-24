@@ -39,21 +39,17 @@ def run_cmsDriver(configdata, label, release_path):
     customise = f'{"" if customiseUser=="empty" else f"--customise {customiseUser}"}'
     print("2 Current dir=", os.getcwd())
     
-    command = f"echo $PWD; \
-    cd {release_path}; \
-    eval `scramv1 runtime -sh`; echo $PATH; \
-    cmsDriver.py hgcal_tpg_validation_{configName}_{label} -n {str(nbEvents)} \
-    --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
-    --conditions {conditions} \
-    --beamspot {beamspot} \
-    --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation \
-    --geometry {geometry} --era {era} \
-    --inputCommands {inputCommands} \
-    {procMod} \
-    --filein {filein} \
-    --no_output \
-    {customise} \
-    --customise_commands {customiseCommand}"
+    command = ("echo $PWD; " + "cd " + release_path + "; " +
+    "eval `scramv1 runtime -sh`; echo $PATH; "
+    "cmsDriver.py hgcal_tpg_validation_" + configName + "_" + label + "-n " + str(nbEvents) +
+    " --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW " +
+    "--conditions " + conditions +
+    " --beamspot " + beamspot +
+    " --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation" +
+    " --geometry " + geometry + " --era " + era +
+    " --inputCommands " + inputCommands + procMod +
+    " --filein " + filein +
+    " --no_output " + customise + " --customise_commands " + customiseCommand)
     
     pprint.pprint(command)
     return command
