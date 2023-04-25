@@ -45,7 +45,7 @@ def run_cmsDriver(configdata, label, release_path):
     " --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW " +
     "--conditions " + conditions +
     " --beamspot " + beamspot +
-    " --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation" +
+    " --step USER:'Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation'" +
     " --geometry " + geometry + " --era " + era +
     " --inputCommands " + inputCommands + " " + procMod +
     " --filein " + filein +
