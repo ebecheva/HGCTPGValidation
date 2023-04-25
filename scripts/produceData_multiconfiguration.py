@@ -47,7 +47,7 @@ def run_cmsDriver(configdata, label, release_path):
     " --beamspot " + beamspot +
     " --step USER:Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation" +
     " --geometry " + geometry + " --era " + era +
-    " --inputCommands " + inputCommands + procMod +
+    " --inputCommands " + inputCommands + " " + procMod +
     " --filein " + filein +
     " --no_output " + customise + " --customise_commands " + customiseCommand)
     
