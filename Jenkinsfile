@@ -141,6 +141,7 @@ pipeline {
                         #!/bin/bash
                         pwd
                         cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+                        source /cvmfs/cms.cern.ch/cmsset_default.sh
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
                         module purge
                         module load python/3.9.9
