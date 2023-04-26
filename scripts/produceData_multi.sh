@@ -14,7 +14,7 @@ echo "Release = " $4
 
 set -v
 pwd
-cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+cd $3/test_dir/$4_HGCalTPGValidation_$2/src
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
 module purge
