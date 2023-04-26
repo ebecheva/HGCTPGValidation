@@ -88,7 +88,7 @@ def main(subsetconfig, label, topdir, release):
                 sourceCmd = ['/bin/bash', '-c', command]
                 #sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
                 #(out, err) = sourceProc.communicate() # wait for subprocess to finish
-                sourceProc = subprocess.run(sourceCmd, stdout=logfile, stderr=logfile, check=True)
+                sourceProc = subprocess.run(sourceCmd, stdout=logfile, stderr=logfile, check=True, text=True)
                 #os.system(command)
             else:
               print("Do not run this configuration: ", key, ": ", value)
