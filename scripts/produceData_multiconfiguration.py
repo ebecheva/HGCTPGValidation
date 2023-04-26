@@ -39,7 +39,7 @@ def run_cmsDriver(configdata, label, release_path):
     customise = f'{"" if customiseUser=="empty" else f"--customise {customiseUser}"}'
     print("2 Current dir=", os.getcwd())
     
-    command = ("echo $PWD; " + "cd " + release_path + "; shopt -s expand_aliases; set +u && source /cvmfs/cms.cern.ch/cmsset_default.sh; set -u; " +
+    command = ("echo $PWD; set -v; " + "cd " + release_path + "; shopt -s expand_aliases; set +u && source /cvmfs/cms.cern.ch/cmsset_default.sh; set -u; " +
     "eval `scramv1 runtime -sh`; echo $PATH; "
     "cmsDriver.py hgcal_tpg_validation_" + configName + "_" + label + " -n " + str(nbEvents) +
     " --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW " +
@@ -85,7 +85,7 @@ def main(subsetconfig, label, topdir, release):
                 cwd = os.getcwd()
                 print("Current working directory:", cwd)
                 command = run_cmsDriver(config_data, label, release_path)
-                sourceCmd = ['/bin/bash', '-c', command]
+                sourceCmd = ['/bin/bash --verbose', '-c', command]
                 #sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
                 #(out, err) = sourceProc.communicate() # wait for subprocess to finish
                 sourceProc = subprocess.run(sourceCmd, stdout=logfile, stderr=logfile, check=True, text=True)
