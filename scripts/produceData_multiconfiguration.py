@@ -85,7 +85,7 @@ def main(subsetconfig, label, topdir, release):
                 cwd = os.getcwd()
                 print("Current working directory:", cwd)
                 command = run_cmsDriver(config_data, label, release_path)
-                sourceCmd = ['/bin/bash --verbose', '-c', command]
+                sourceCmd = ['/bin/bash', '-c', command]
                 #sourceProc = subprocess.Popen(sourceCmd, stdout=logfile, stderr=logfile)
                 #(out, err) = sourceProc.communicate() # wait for subprocess to finish
                 sourceProc = subprocess.run(sourceCmd, stdout=logfile, stderr=logfile, check=True, text=True)
