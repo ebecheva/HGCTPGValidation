@@ -136,6 +136,8 @@ pipeline {
         stage('Produce'){
             steps {
                 sh '''
+                echo $$ $BASHPID
+                ( echo $$ $BASHPID  )
                 ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multi.sh ${CONFIG_SUBSET} ${LABEL_TEST} ${WORKSPACE} ${REF_RELEASE}
                 '''     
             }
