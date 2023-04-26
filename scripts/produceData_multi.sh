@@ -12,7 +12,12 @@ echo "Label = " $2
 echo "Workspace dir = " $3
 echo "Release = " $4
 
+set -v
+pwd
+cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-echo $PWD
-eval `scramv1 runtime -sh`
+module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
+module purge
+module load python/3.9.9
+python --version
 python $3/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig $1 --label $2 --workspace $3 --release $4
