@@ -136,18 +136,7 @@ pipeline {
         stage('Produce'){
             steps {
                 sh '''
-                #!/bin/bash
-                set -v
-                pwd
-                cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
-                source /cvmfs/cms.cern.ch/cmsset_default.sh
-                module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
-                module purge
-                module load python/3.9.9
-                python --version
-                echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                echo 'LABEL_TEST = ' ${LABEL_TEST}
-                python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --workspace ${WORKSPACE} --release ${REF_RELEASE}
+                ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multi.sh ${CONFIG_SUBSET} ${LABEL_TEST} ${WORKSPACE} ${REF_RELEASE}
                 '''     
             }
         }
