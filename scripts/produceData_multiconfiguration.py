@@ -51,7 +51,7 @@ def run_cmsDriver(configdata, label, release_path):
     #" --filein " + filein +
     #" --no_output " + customise + " --customise_commands " + customiseCommand)
     
-    pprint.pprint(command)
+    print(command)
     return command
     
 def main(subsetconfig, label, topdir, release):
