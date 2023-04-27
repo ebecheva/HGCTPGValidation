@@ -149,6 +149,7 @@ pipeline {
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                         echo 'LABEL_TEST = ' ${LABEL_TEST}
                         printenv
+                        ls -l ${CMS_PATH}/slc7_amd64_gcc10/cms/cmssw-patch/CMSSW_12_5_2_patch1/cfipython/slc7_amd64_gcc10/RecoHGCal/TICL
                         python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --workspace ${WORKSPACE} --release ${REF_RELEASE}
                         '''     
                     }
