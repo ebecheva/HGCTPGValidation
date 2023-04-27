@@ -148,6 +148,7 @@ pipeline {
                         python --version
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                         echo 'LABEL_TEST = ' ${LABEL_TEST}
+                        printenv
                         python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --workspace ${WORKSPACE} --release ${REF_RELEASE}
                         '''     
                     }
