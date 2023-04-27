@@ -138,6 +138,7 @@ pipeline {
                 sh '''
                 echo $$ $BASHPID
                 ( echo $$ $BASHPID  )
+                printenv
                 ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multi.sh ${CONFIG_SUBSET} ${LABEL_TEST} ${WORKSPACE} ${REF_RELEASE}
                 '''     
             }
