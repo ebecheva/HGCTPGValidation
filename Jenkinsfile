@@ -140,6 +140,7 @@ pipeline {
                         sh '''
                         #!/bin/bash
                         pwd
+                        source /cvmfs/cms.cern.ch/cmsset_default.sh
                         cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         eval `scram runtime -sh`
                         module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
