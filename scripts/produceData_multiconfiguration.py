@@ -40,7 +40,7 @@ def run_cmsDriver(configdata, label, release_path):
     print("2 Current dir=", os.getcwd())
     
     command = ("echo $PWD; set -v; echo $$ $BASHPID ; ( echo $$ $BASHPID  ); " + "cd " + release_path + "; shopt -s expand_aliases; set +u && source /cvmfs/cms.cern.ch/cmsset_default.sh; set -u; " +
-    " eval `scram runtime -sh`; printenv; export PATH=${CMS_PATH}/slc7_amd64_gcc10/cms/cmssw-patch/CMSSW_12_5_2_patch1/cfipython:$PATH; echo $PATH; ls -l ${CMS_PATH}/slc7_amd64_gcc10/cms/cmssw-patch/CMSSW_12_5_2_patch1/cfipython/slc7_amd64_gcc10/RecoHGCal/TICL;" +
+    " eval `scram runtime -sh`; printenv; echo $PATH; ls -l ${CMS_PATH}/slc7_amd64_gcc10/cms/cmssw-patch/CMSSW_12_5_2_patch1/cfipython/slc7_amd64_gcc10/RecoHGCal/TICL;" +
     " cmsDriver.py hgcal_tpg_validation_" + configName + "_" + label + " -n " + str(nbEvents) +
     " --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW" +
     " --conditions " + conditions +
