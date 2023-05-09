@@ -150,6 +150,7 @@ pipeline {
                         echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
                         echo 'LABEL_TEST = ' ${LABEL_TEST}
                         printenv
+                        echo $PATH
                         ls -l ${CMS_PATH}/slc7_amd64_gcc10/cms/cmssw-patch/CMSSW_12_5_2_patch1/cfipython/slc7_amd64_gcc10/RecoHGCal/TICL
                         python ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST} --workspace ${WORKSPACE} --release ${REF_RELEASE}
                         '''     
@@ -190,7 +191,6 @@ pipeline {
                 sh '''
                 cd test_dir
                 source ${WORKSPACE}/HGCTPGValidation/env_install.sh
-                echo $PWD
                 python ${WORKSPACE}/HGCTPGValidation/scripts/displayHistos.py --subsetconfig ${CONFIG_SUBSET} --refdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_REF}/src --testdir ${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src --datadir ${DATA_DIR} --prnumber $CHANGE_ID --prtitle "$CHANGE_TITLE (from $CHANGE_AUTHOR, $CHANGE_URL)"
                 '''            
             }
