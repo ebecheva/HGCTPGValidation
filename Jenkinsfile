@@ -140,6 +140,7 @@ pipeline {
                         sh '''
                         #!/bin/bash
                         pwd
+                        who am i
                         source /cvmfs/cms.cern.ch/cmsset_default.sh
                         cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         eval `scram runtime -sh`
