@@ -45,7 +45,6 @@ def run_cmsDriver(configdata, label, release_path):
     " cmsDriver.py hgcal_tpg_validation_" + configName + "_" + label + " -n " + str(nbEvents) +
     " --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW" +
     " --conditions " + conditions +
-    " --dump_python " +
     " --beamspot " + beamspot +
     " --step USER:'Validation/HGCalValidation/hgcalRunEmulatorValidationTPG_cff.hgcalTPGRunEmulatorValidation'" +
     " --geometry " + geometry + " --era " + era +
