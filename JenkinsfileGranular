@@ -139,7 +139,10 @@ pipeline {
                 echo $$ $BASHPID
                 ( echo $$ $BASHPID  )
                 printenv
-                ${WORKSPACE}/HGCTPGValidation/scripts/produceData_multi.sh ${CONFIG_SUBSET} ${LABEL_TEST} ${WORKSPACE} ${REF_RELEASE}
+                pwd
+                export PROC_MODIFIER=""
+                cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
+                ../../../HGCTPGValidation/scripts/produceData.sh ${LABEL_TEST} $PROC_MODIFIER
                 '''     
             }
         }
