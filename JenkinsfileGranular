@@ -138,6 +138,7 @@ pipeline {
                 sh '''
                 echo $$ $BASHPID
                 ( echo $$ $BASHPID  )
+                source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                 printenv
                 pwd
                 export PROC_MODIFIER=""
