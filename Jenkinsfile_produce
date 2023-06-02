@@ -89,16 +89,6 @@ pipeline {
                         '''
                     }
                 }
-                stage('SetCMSSWEnvVar'){
-                    steps{
-                        script{
-                            env.REF_RELEASE = sh(returnStdout: true, script: 'source ${WORKSPACE}/HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}')
-                            env.SCRAM_ARCH = sh(returnStdout: true, script: 'source ${WORKSPACE}/HGCTPGValidation/scripts/getScramArch.sh ${REF_RELEASE}')
-                        }
-                        echo "REF_RELEASE= ${REF_RELEASE}"
-                        echo "SCRAM_ARCH = ${SCRAM_ARCH}"
-                    }
-                }
             }
         }
         stage('BuildCMSSWTest'){
@@ -109,6 +99,8 @@ pipeline {
                         sh '''
                         pwd
                         cd test_dir
+                        source ../HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
+                        source ../HGCTPGValidation/scripts/getScramArch.sh $REF_RELEASE
                         if [ -z "$CHANGE_FORK" ]
                         then
                             export REMOTE=$BASE_REMOTE
@@ -124,6 +116,7 @@ pipeline {
                     steps{
                         sh '''
                         source /cvmfs/cms.cern.ch/cmsset_default.sh
+                        source ./HGCTPGValidation/scripts/extractReleaseName.sh $CHANGE_TARGET
                         cd ${WORKSPACE}/test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
                         scram build code-checks
                         scram build code-format
