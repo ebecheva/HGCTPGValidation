@@ -92,8 +92,8 @@ pipeline {
                 stage('SetCMSSWEnvVar'){
                     steps{
                         script{
-                            env.REF_RELEASE = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}')
-                            env.SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh ${REF_RELEASE}')
+                            env.REF_RELEASE = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}').trim()
+                            env.SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh ${REF_RELEASE}').trim()
                         }
                         echo "REF_RELEASE= ${REF_RELEASE}"
                         echo "SCRAM_ARCH = ${SCRAM_ARCH}"
