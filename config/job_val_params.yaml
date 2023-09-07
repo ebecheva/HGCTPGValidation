@@ -1,0 +1,7 @@
+---
+description:
+    These parameters are used by the Jenkins job
+    validating the new development in the validation code
+parameters:
+    cmsswRemote: hgc-tpg
+    cmsswBranch: hgc-tpg-CMSSW_12_5_2_patch1
