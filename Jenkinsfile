@@ -56,7 +56,7 @@ pipeline {
                             env.JOB_FLAG=0
                             break
                         case 'HGC TPG Dev Validation - TEST':
-                            env.EMAIL_TO=env.EMAIL_TO_EB
+                            env.EMAIL_TO=env.EMAIL_TO_MAIN
                             env.BASE_REMOTE=env.BASE_REMOTE_MAIN
                             env.DATA_DIR=env.DATA_DIR_VALTEST
                             env.WEBPAGES_VAL=env.WEBPAGES_VAL_CODE_TEST
