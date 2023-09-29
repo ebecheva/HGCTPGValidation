@@ -52,7 +52,7 @@ pipeline {
                             env.REMOTE_HGCTPGVAL=env.BASE_REMOTE
                             env.DATA_DIR=env.DATA_DIR_JB
                             env.BRANCH_HGCTPGVAL=env.BRANCH_VAL_JB
-                            env.WEBPAGES_VAL=env.
+                            env.WEBPAGES_VAL=env.WEBPAGES_VAL_CMSSW_TEST_JB
                             env.JOB_FLAG=0
                             break
                         case 'HGC TPG Dev Validation - TEST':
@@ -74,20 +74,24 @@ pipeline {
                             break
                     }
                     
-                    env.BRANCH_HGCTPGVAL=env.CHANGE_BRANCH
+                    if (env.JOB_FLAG=='1'){
+                        
+                        env.BRANCH_HGCTPGVAL=env.CHANGE_BRANCH
+                        env.CHANGE_TARGET_HGCTPGVAL=env.CHANGE_TARGET
+                        
+                        if (env.CHANGE_FORK){
+                            env.REMOTE_HGCTPGVAL = env.CHANGE_FORK
+                        }
+                        else {
+                            env.REMOTE_HGCTPGVAL = env.BASE_REMOTE
+                        }
+                    }
                     
-                    if (env.CHANGE_FORK){
-                        env.REMOTE_HGCTPGVAL = env.CHANGE_FORK
-                    }
-                    else {
-                        env.REMOTE_HGCTPGVAL = env.BASE_REMOTE
-                    }
                     println(env.REMOTE_HGCTPGVAL)
                     println(env.BRANCH_HGCTPGVAL)
                     
-                            
+                    
                     println(env.BASE_REMOTE)
-                    println(env.REMOTE)
                     println(env.DATA_DIR)
                     println(env.CHANGE_TARGET)
                     println(env.CHANGE_BRANCH)
@@ -137,11 +141,20 @@ pipeline {
                 stage('SetCMSSWEnvVar'){
                     steps{
                         script{
-                            if ( env.JOB_FLAG == 0 ){
+                            if ( env.JOB_FLAG == '0' ){
                                 env.REF_RELEASE = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/extractReleaseName.sh ${CHANGE_TARGET}').trim()
                                 env.SCRAM_ARCH = sh(returnStdout: true, script: 'source ./HGCTPGValidation/scripts/getScramArch.sh ${REF_RELEASE}').trim()
+                                
+                                if (env.CHANGE_FORK){
+                                    env.REMOTE = env.CHANGE_FORK
+                                }
+                                else {
+                                    env.REMOTE = env.BASE_REMOTE
+                                }
+                                
                                 println(env.REF_RELEASE)
                                 println(env.SCRAM_ARCH)
+                                println(env.REMOTE)
                             } 
                             else {
                                 env.REF_BRANCH = sh(returnStdout: true, script: 'module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/; module purge; module load python/3.9.9; python ./HGCTPGValidation/scripts/get_cmsswRefBranch.py').trim()
@@ -171,13 +184,6 @@ pipeline {
                         sh '''
                         pwd
                         cd test_dir
-                        if [ -z "$CHANGE_FORK" ]
-                        then
-                            export REMOTE=$BASE_REMOTE
-                        else
-                            export REMOTE=$CHANGE_FORK
-                        fi
-                        echo 'REMOTE= ', $REMOTE
                         ../HGCTPGValidation/scripts/installCMSSW.sh $SCRAM_ARCH $REF_RELEASE $REMOTE $BASE_REMOTE $CHANGE_BRANCH $CHANGE_TARGET ${LABEL_TEST}
                         '''
                     }
@@ -255,6 +261,15 @@ pipeline {
         }
     }
     post {
+        always {
+            script{
+                if ( env.JOB_FLAG=='1' ) {    
+                    env.CHANGE_BRANCH = env.BRANCH_HGCTPGVAL
+                    env.CHANGE_TARGET = env.CHANGE_TARGET_HGCTPGVAL
+                    println( "Validation of the validation: Set the original name of CHANGE_BRANCH => " + env.CHANGE_BRANCH )
+                }
+            }
+        }
         success {
             echo 'The job finished successfully.'
             mail to: "${EMAIL_TO}",
