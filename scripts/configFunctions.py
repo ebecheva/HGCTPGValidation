@@ -36,9 +36,9 @@ def check_schema_config(config, filename):
             "geometry": str,
             "era": str,
             "inputCommands": str,
-            Optional("procModifiers", default=empty): str,
+            Optional("procModifiers", default="empty"): str,
             "filein": str,
-            Optional("customise", default=empty): str,
+            Optional("customise", default="empty"): str,
             Optional("customise_commands", default=''): str
         }
     })
