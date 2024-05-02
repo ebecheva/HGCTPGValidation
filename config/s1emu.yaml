@@ -1,0 +1,14 @@
+---
+shortName: s1emu
+longName: "Stage 1 emulator"
+description: |
+    Using Stage 1 emulator instead of the default passthrough in Stage 1
+parameters:
+    nbOfEvents: 50
+    conditions: auto:phase2_realistic_T21
+    beamspot: VtxSmearedHLLHC14TeV
+    geometry: Extended2026D88
+    era: Phase2C17I13M9
+    inputCommands: '"keep *"'
+    filein: file:/data_CMS_upgrade/data_jenkins/Phase2Fall22DRMiniAOD/TT_TuneCP5_14TeV-powheg-pythia8/GEN-SIM-DIGI-RAW-MINIAOD/PU200_125X_mcRun4_realistic_v2_ext1-v1/000c5e5f-78f7-44ee-95fe-7b2f2c2e2312.root
+    customise: L1Trigger/L1THGCal/customLayer1.custom_layer1_truncationfw
