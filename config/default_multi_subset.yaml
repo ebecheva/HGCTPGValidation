@@ -6,3 +6,7 @@ configuration:
       test: default
     - ref: bcstc
       test: bcstc
+    - ref: s1emu
+      test: s1emu
+    - ref: default
+      test: s1emu
