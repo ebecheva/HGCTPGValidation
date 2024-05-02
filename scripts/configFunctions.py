@@ -6,7 +6,7 @@ import os
 import sys
 import subprocess
 
-from schema import Schema, SchemaError
+from schema import Schema, SchemaError, Optional
 
 # Define the schema of the subset config file
 def check_schema_subset(config, filename):
@@ -36,10 +36,10 @@ def check_schema_config(config, filename):
             "geometry": str,
             "era": str,
             "inputCommands": str,
-            "procModifiers": str,
+            Optional("procModifiers", default=empty): str,
             "filein": str,
-            "customise": str,
-            "customise_commands": str
+            Optional("customise", default=empty): str,
+            Optional("customise_commands", default=''): str
         }
     })
 
