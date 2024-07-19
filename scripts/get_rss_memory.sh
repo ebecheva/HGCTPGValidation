@@ -53,7 +53,7 @@ while true; do
         if [ "${RSS}" -gt "${RSS_limit}" ]; then
             kill -9 $PID;
             echo "===> RSS memory ${RSS} > RSS limit ${RSS_limit}";
-            break;
+            exit 1;
         fi
         
     fi
