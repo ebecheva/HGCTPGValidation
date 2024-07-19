@@ -28,8 +28,11 @@ fi
 INTERVAL=$2
 RSS_limit=$3
 
+# Wait the process cmsRun starts running
 sleep 20
-    
+
+EXIT_CODE="OK"
+
 while true; do
     echo "LastProcess PID= " $1
     
@@ -44,7 +47,7 @@ while true; do
     
     if [ -z "$PID" ] || [ ! -e /proc/$PID/status ] ; then
         echo "Process $PID not found."
-        break;
+        exit 1;
     else
         # Get the RSS (Resident Set Size) memory usage
         RSS=$(grep -i vmrss /proc/$PID/status | awk '{print $2}')
@@ -53,10 +56,12 @@ while true; do
         if [ "${RSS}" -gt "${RSS_limit}" ]; then
             kill -9 $PID;
             echo "===> RSS memory ${RSS} > RSS limit ${RSS_limit}";
-            exit 1;
+            EXIT_CODE="Memory error!"
+            break;
         fi
         
     fi
     
     sleep $INTERVAL
 done
+echo ${EXIT_CODE}
