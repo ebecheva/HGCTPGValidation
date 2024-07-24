@@ -246,23 +246,22 @@ pipeline {
                     }
                 }
                 stage('Produce'){
-                    steps {
+                       steps {
+                        script{
                         sh '''
                         set +x
                         echo '===> Produce test data.'
                         exec >> log_Jenkins
                         echo '===> Produce test data.'
                         pwd
-                        cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src
-                        module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/
-                        module purge
-                        module load python/3.9.9
-                        python --version
-                        echo ' CONFIG_SUBSET = ' ${CONFIG_SUBSET}
-                        echo 'LABEL_TEST = ' ${LABEL_TEST}
-                        echo 'SCRAM_ARCH = ' ${SCRAM_ARCH}
-                        python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}
-                        echo '      '
+                        '''
+                        env.EXIT_CODE_PRODUCE = sh(returnStdout: true, script: 'set +x exec >> log_Jenkins; cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src; module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/; module purge; module load python/3.9.9; python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}').trim()
+                        println(env.EXIT_CODE_PRODUCE)
+                            
+                        }
+                        sh '''
+                       
+                        echo 'EXIT_CODE_PRODUCE=' $EXIT_CODE_PRODUCE
                         '''
                     }
                 }
