@@ -260,7 +260,12 @@ pipeline {
                             
                         }
                         sh '''
-                       
+                        if ( $EXIT_CODE_PRODUCE != 0 ) {
+                            echo "Error: Produce command exited with status $EXIT_CODE_PRODUCE."
+                            exit 1
+                        } else {
+                            echo "Produce step finished successfully"
+                        }
                         echo 'EXIT_CODE_PRODUCE=' $EXIT_CODE_PRODUCE
                         '''
                     }
