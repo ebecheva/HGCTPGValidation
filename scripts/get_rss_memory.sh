@@ -31,37 +31,33 @@ RSS_limit=$3
 # Wait the process cmsRun starts running
 sleep 20
 
-EXIT_CODE="OK"
-
 while true; do
-    #echo "LastProcess PID= " $1
+    echo "LastProcess PID= " $1
     
-    #ps
+    ps
     
     # Get PID for the process "cmsRun" and the user "jenkins"
     p_all=$(ps -eo pid,user,comm | grep cmsRun | grep jenkins | awk '{print}')
-    #echo "=== > Information about the process (PID user name_process): " $p_all
+    echo "=== > Information about the process (PID user name_process): " $p_all
     
     PID=$(ps -eo pid,user,comm | grep cmsRun | grep jenkins | awk '{print $1}')
-    #echo "PID=" $PID
+    echo "PID=" $PID
     
     if [ -z "$PID" ] || [ ! -e /proc/$PID/status ] ; then
-        #echo "Process $PID not found."
+        echo "Process $PID not found."
         exit 1;
     else
         # Get the RSS (Resident Set Size) memory usage
         RSS=$(grep -i vmrss /proc/$PID/status | awk '{print $2}')
-        #echo "Free memory (RSS) for process PID=$PID: ${RSS} kB"
+        echo "Free memory (RSS) for process PID=$PID: ${RSS} kB"
         
         if [ "${RSS}" -gt "${RSS_limit}" ]; then
             kill -9 $PID;
-            #echo "===> RSS memory ${RSS} > RSS limit ${RSS_limit}";
-            EXIT_CODE="Memory_error"
-            break;
+            echo "===> RSS memory ${RSS} > RSS limit ${RSS_limit}";
+            exit 1;
         fi
         
     fi
     
     sleep $INTERVAL
 done
-echo ${EXIT_CODE}

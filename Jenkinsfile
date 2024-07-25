@@ -255,7 +255,7 @@ pipeline {
                         echo '===> Produce test data.'
                         pwd
                         '''
-                        env.EXIT_CODE_PRODUCE = sh(returnStdout: true, script: 'set +x exec >> log_Jenkins; cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src; module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/; module purge; module load python/3.9.9; python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}').trim()
+                        env.EXIT_CODE_PRODUCE = sh(returnStatus: true, script: 'set +x exec >> log_Jenkins; cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src; module use /opt/exp_soft/vo.llr.in2p3.fr/modulefiles_el7/; module purge; module load python/3.9.9; python ../../../HGCTPGValidation/scripts/produceData_multiconfiguration.py --subsetconfig ${CONFIG_SUBSET} --label ${LABEL_TEST}').trim()
                         println(env.EXIT_CODE_PRODUCE)
                             
                         }
