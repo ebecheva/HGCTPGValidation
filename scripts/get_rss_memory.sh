@@ -6,6 +6,8 @@
 # 2nd argument: interval in seconds
 # 3th argument: memory limit
 
+echo "Starts ger_rss_memory.sh script!"
+
 # Check if the PID of the last process is provided
 if [ -z "$1" ]; then
     echo "Usage: $0 PID INTERVALL RSS_LIMIT"
@@ -52,8 +54,8 @@ while true; do
         echo "Free memory (RSS) for process PID=$PID: ${RSS} kB"
         
         if [ "${RSS}" -gt "${RSS_limit}" ]; then
-            kill -9 $PID;
             echo "===> RSS memory ${RSS} > RSS limit ${RSS_limit}";
+            kill -9 $PID;
             exit 1;
         fi
         
