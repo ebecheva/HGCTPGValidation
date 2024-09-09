@@ -80,9 +80,7 @@ def main(subsetconfig, release):
               else:
                 command = run_cmsDriver(config_data, release)
                 sourceCmd = ['bash', '-c', command]
-                #sourceProc = subprocess.run(sourceCmd, stdout=logfile, stderr=logfile, check=True, text=True)
-                # testing
-                sourceProc = subprocess.run(sourceCmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True, text=True, shell=True)
+                sourceProc = subprocess.run(sourceCmd, check=True, text=True)
             else:
               print("Do not run this configuration: ", key, ": ", value)
 
