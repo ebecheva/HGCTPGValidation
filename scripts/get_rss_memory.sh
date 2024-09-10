@@ -54,7 +54,7 @@ while true; do
         echo "Free memory (RSS) for process PID=$PID: ${RSS} kB"
         
         if [ "${RSS}" -gt "${RSS_limit}" ]; then
-            echo "===> RSS memory ${RSS} > RSS limit ${RSS_limit}" &&
+            echo "===> RSS memory ${RSS} > RSS limit ${RSS_limit}" 1>&2 &&
             kill -9 $PID &&
             exit 1;
         fi
