@@ -33,7 +33,7 @@ INTERVAL=$2
 RSS_limit=$3
 
 # Wait the process cmsRun starts running
-sleep 20
+sleep 2
 
 # Get PID for the process "cmsRun" and the user "jenkins"
 p_all=$(ps -eo pid,user,comm | grep cmsRun | grep jenkins | awk '{print}')
