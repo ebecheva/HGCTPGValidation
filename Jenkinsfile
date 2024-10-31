@@ -27,10 +27,10 @@ pipeline {
                 '''
                 script{
                     String s = env.JOB_NAME
-                    s = s.substring(s.indexOf("/") + 1)
-                    s = s.substring(0, s.indexOf("/"));
-                    println(s);
-                    switch(s){
+                    String[] elements = s.split("/")
+                    String job_name = elements[-2]
+                    println(job_name);
+                    switch(job_name){
                        case 'HGC TPG CMSSW Validation':
                             env.EMAIL_TO=env.HGCTPG_EMAIL_TO_MAIN
                             env.BASE_REMOTE=env.HGCTPG_BASE_REMOTE_MAIN
@@ -246,11 +246,10 @@ pipeline {
                     }
                 }
                 stage('Produce'){
-                    steps {
+                       steps {
                         sh '''
                         set +x
                         echo '===> Produce test data.'
-                        exec >> log_Jenkins
                         echo '===> Produce test data.'
                         pwd
                         cd test_dir/${REF_RELEASE}_HGCalTPGValidation_${LABEL_TEST}/src

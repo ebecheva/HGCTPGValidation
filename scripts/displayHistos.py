@@ -59,7 +59,10 @@ def	extractTimeMemoryInfos(namefile, dirname):
         os.system("rm " + outputfile)
     else:
         print("The file ", outputfile, "wille be created.")
-        
+    
+    # Create a temporary list for RSS values
+    RSS_values = []
+    
     # Open the file to read
     with open(nfile) as f:
     # Open the file to fill with the extracted information
@@ -67,10 +70,9 @@ def	extractTimeMemoryInfos(namefile, dirname):
             for line in f:
                 # Read Memory report information
                 # Extract the value of the peak
-                if "MemoryReport>" in line:
+                if "MemoryCheck: event" in line:
                     indicator = line.split(" ")
-                    print(f"{indicator[4]} {indicator[5]}")
-                    f1.writelines(f"{indicator[4]} {indicator[5]}")
+                    RSS_values.append(indicator[7])
                 # Read Time summary information
                 if " Time Summary:" in line:
                     # Read 18 lines starting from " Time Summary:"
@@ -78,12 +80,13 @@ def	extractTimeMemoryInfos(namefile, dirname):
                     for current_line in lines_cache:
                         indicator = current_line.split(" ")
                         if (indicator[2])=="Avg":
-                            print(indicator[6])
-                            f1.write(indicator[6])
+                            print(indicator[6].strip() + " s\n")
+                            f1.write(indicator[6].strip()  + " s\n")
                         else:
-                            print(indicator[5])
-                            f1.write(indicator[5])
-
+                            print(indicator[5].strip() + " s\n")
+                            f1.write(indicator[5].strip() + " s\n")
+            f1.write(max(RSS_values) + " Mbytes \n")
+            
 # Extract Time information for all modules
 #find . -name "out_ref.log" | xargs grep "TimeModule>" > TimingInfo_ref.txt
 #find . -name "out_test.log" | xargs grep "TimeModule>" > TimingInfo_test.txt

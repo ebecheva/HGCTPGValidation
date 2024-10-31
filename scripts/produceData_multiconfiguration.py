@@ -25,7 +25,7 @@ def run_cmsDriver(configdata, release):
     filein=configdata['parameters']['filein']
     customiseUser=configdata['parameters']['customise']
     customiseUserCommand=configdata['parameters']['customise_commands']
-    customiseCommand=f'"{customiseUserCommand} process.onlineSaver.tag = cms.untracked.string(\'validation_HGCAL_TPG_{configName}_{release}\'); process.MessageLogger.files.out_{configName}_{release} = dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1)); process.schedule = cms.Schedule(process.user_step)"'
+    customiseCommand=f'"{customiseUserCommand} process.onlineSaver.tag = cms.untracked.string(\'validation_HGCAL_TPG_{configName}_{release}\'); process.MessageLogger.files.out_{configName}_{release} = dict(); process.Timing = cms.Service(\'Timing\', summaryOnly = cms.untracked.bool(False), useJobReport = cms.untracked.bool(True)); process.SimpleMemoryCheck = cms.Service(\'SimpleMemoryCheck\', ignoreTotal = cms.untracked.int32(1), oncePerEventMode=cms.untracked.bool(True)); process.schedule = cms.Schedule(process.user_step)"'
 
     # If procModifiers==empty we get an empty string, so procModifiers is not used,
     # else --procModifiers {procModifiers} is added
@@ -35,7 +35,7 @@ def run_cmsDriver(configdata, release):
     # else --customise {customiseUser}
     customise = f'{"" if customiseUser=="empty" else f"--customise {customiseUser}"}'
     
-    command = f"echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
+    command = f"echo $$ ; echo $PWD; source /cvmfs/cms.cern.ch/cmsset_default.sh; eval `scramv1 runtime -sh`; \
     cmsDriver.py hgcal_tpg_validation_{configName}_{release} -n {str(nbEvents)} \
     --mc --eventcontent FEVTDEBUG --datatier GEN-SIM-DIGI-RAW \
     --conditions {conditions} \
@@ -47,7 +47,7 @@ def run_cmsDriver(configdata, release):
     --filein {filein} \
     --no_output \
     {customise} \
-    --customise_commands {customiseCommand}"
+    --customise_commands {customiseCommand} & ../../../HGCTPGValidation/scripts/get_rss_memory.sh $! 10 1000000"
     
     pprint.pprint(command)
     return command
@@ -80,7 +80,7 @@ def main(subsetconfig, release):
               else:
                 command = run_cmsDriver(config_data, release)
                 sourceCmd = ['bash', '-c', command]
-                sourceProc = subprocess.run(sourceCmd, stdout=logfile, stderr=logfile, check=True, text=True)
+                sourceProc = subprocess.run(sourceCmd, check=True, text=True)
             else:
               print("Do not run this configuration: ", key, ": ", value)
 
