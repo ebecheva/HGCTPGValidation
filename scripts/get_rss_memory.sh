@@ -39,16 +39,12 @@ sleep 2
 p_all=$(ps -eo pid,user,comm | grep cmsRun | grep jenkins | awk '{print}')
 PID=$(ps -eo pid,user,comm | grep cmsRun | grep jenkins | awk '{print $1}')
 
-if [ "$DEBUG" = "1" ] ; then
-    echo "LastProcess PID= " $1
-    ps
+if [ -z "$PID" ] ; then
+    echo "ERROR: Process $PID not found!" 1>&2 &&
+    exit 1;
+else
     echo "=== > Information about the process (PID user name_process): " $p_all
     echo "PID=" $PID
-fi
-    
-if [ -z "$PID" ] ; then
-    echo "Process $PID not found!" 1>&2 &&
-    exit 1;
 fi
     
 while true; do
@@ -64,7 +60,7 @@ while true; do
         fi
         
         if [ "${RSS}" -gt "${RSS_limit}" ]; then
-            echo "===> RSS memory $(( ${RSS} / 1000 )) MB > RSS limit $(( ${RSS_limit} / 1000 )) MB"  1>&2 &&
+            echo "ERROR: RSS memory $(( ${RSS} / 1000 )) MB > RSS limit $(( ${RSS_limit} / 1000 )) MB"  1>&2 &&
             kill -9 $PID &&
             exit 1;
         fi  
